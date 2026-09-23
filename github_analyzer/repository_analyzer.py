@@ -1,5 +1,25 @@
-import requests
+import os
 import re
+from datetime import datetime, timezone
+from pathlib import Path
+import requests
+
+ROOT_DIR = Path(__file__).resolve().parents[1]
+ENV_FILE = ROOT_DIR / ".env"
+
+
+def load_env_token() -> str:
+    token = os.getenv("GITHUB_TOKEN", "")
+    if not token and ENV_FILE.exists():
+        try:
+            for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if line.startswith("GITHUB_TOKEN="):
+                    token = line.split("=", 1)[1].strip().strip('"').strip("'")
+                    break
+        except Exception:
+            pass
+    return token
 
 
 # ==================================================
@@ -40,29 +60,16 @@ def extract_owner_repo(repo_url):
 # ==================================================
 
 def github_headers(github_token=""):
-
-
     headers = {
-
-        "Accept":
-        "application/vnd.github+json"
-
+        "Accept": "application/vnd.github+json"
     }
+    cleaned_token = str(github_token).strip() if github_token else ""
+    # If no valid token supplied, seamlessly fallback to backend .env token
+    if not cleaned_token or "xxxx" in cleaned_token.lower() or len(cleaned_token) < 20:
+        cleaned_token = load_env_token()
 
-
-
-    if github_token:
-
-
-        headers[
-            "Authorization"
-        ] = (
-
-            f"Bearer {github_token}"
-
-        )
-
-
+    if cleaned_token and "xxxx" not in cleaned_token.lower() and len(cleaned_token) >= 20:
+        headers["Authorization"] = f"Bearer {cleaned_token}"
     return headers
 
 
@@ -124,16 +131,16 @@ def analyze_github_repository(
 
 
     if response.status_code != 200:
-
-
+        error_msg = f"Unable to access GitHub repository (Status: {response.status_code})"
+        if response.status_code == 401:
+            error_msg = "GitHub Token Error: 401 Bad credentials. Clear the token input or provide a valid personal access token."
+        elif response.status_code == 404:
+            error_msg = f"Repository '{owner}/{repo}' not found. Please verify the repository URL."
+        elif response.status_code == 403:
+            error_msg = "GitHub API rate limit exceeded. Please provide a valid Personal Access Token."
         return {
-
-            "error":
-            "Unable to access GitHub repository",
-
-            "status_code":
-            response.status_code
-
+            "error": error_msg,
+            "status_code": response.status_code
         }
 
 
@@ -430,65 +437,63 @@ def analyze_github_repository(
 
 
 
+    prior_runs_count = 0
+    prior_failure_count = 0
+    recent_3_failure_count = 0
+    recent_3_total = 0
+    hours_since_last_failure = 168.0
+    hours_since_last_run = 24.0
+    prior_failure_rate = 0.10
+    failure_rate_3 = 0.10
 
     if action_response.status_code == 200:
-
-
-        runs = (
-
-            action_response
-            .json()
-            .get(
-                "workflow_runs",
-                []
-            )
-
-        )
-
+        runs = action_response.json().get("workflow_runs", [])
 
 
         if runs:
-
-
             latest_run = runs[0]
-
-
             previous_status = (
-
-                latest_run
-                .get(
-                    "conclusion"
-                )
-
-                or
-
-                "running"
-
+                latest_run.get("conclusion")
+                or "running"
             )
 
-
-
             if previous_status == "failure":
-
-
                 previous_failed_step = (
-
-                    latest_run
-                    .get(
-                        "name",
-                        "GitHub Action"
-
-                    )
-
+                    latest_run.get("name", "GitHub Action")
                 )
-
-
-
                 previous_error = (
-
                     "Previous GitHub Action failed"
-
                 )
+
+            now_dt = datetime.now(timezone.utc)
+            completed_runs = [r for r in runs if r.get("conclusion") in ("success", "failure")]
+            prior_runs_count = len(completed_runs)
+
+            if completed_runs:
+                prior_failure_count = sum(1 for r in completed_runs if r.get("conclusion") == "failure")
+                recent_3 = completed_runs[:3]
+                recent_3_total = len(recent_3)
+                recent_3_failure_count = sum(1 for r in recent_3 if r.get("conclusion") == "failure")
+
+                try:
+                    created_raw = latest_run.get("created_at", "").replace("Z", "+00:00")
+                    run_dt = datetime.fromisoformat(created_raw)
+                    hours_since_last_run = max(0.01, (now_dt - run_dt).total_seconds() / 3600.0)
+                except Exception:
+                    pass
+
+                for r in completed_runs:
+                    if r.get("conclusion") == "failure":
+                        try:
+                            fail_raw = r.get("created_at", "").replace("Z", "+00:00")
+                            fail_dt = datetime.fromisoformat(fail_raw)
+                            hours_since_last_failure = max(0.01, (now_dt - fail_dt).total_seconds() / 3600.0)
+                            break
+                        except Exception:
+                            pass
+
+        prior_failure_rate = (prior_failure_count / max(1, prior_runs_count)) if prior_runs_count > 0 else (1.0 if previous_status == "failure" else 0.10)
+        failure_rate_3 = (recent_3_failure_count / max(1, recent_3_total)) if recent_3_total > 0 else prior_failure_rate
 
 
 
@@ -498,87 +503,28 @@ def analyze_github_repository(
     # Final output for AI model
     # ==================================================
 
-
     return {
-
-
-        "repository":
-        f"{owner}/{repo}",
-
-
-        "repo_url":
-        repo_url,
-
-
-        "commit_id":
-        commit_id,
-
-
-        "commit_message":
-        commit_message,
-
-
-        "files_changed":
-        len(changed_files),
-
-
-        "lines_added":
-        lines_added,
-
-
-        "lines_deleted":
-        lines_deleted,
-
-
-        "total_changes":
-        lines_added + lines_deleted,
-
-
-        "dependency_file_changed":
-        int(
-            dependency_changed
-        ),
-
-
-        "test_file_changed":
-        int(
-            test_changed
-        ),
-
-
-        "workflow_changed":
-        int(
-            workflow_changed
-        ),
-
-
-        "source_file_changed":
-        int(
-            source_changed
-        ),
-
-
-        "risk_file_count":
-        risk_count,
-
-
-        "changed_files":
-
-        ", ".join(
-            changed_files
-        ),
-
-
-        "previous_build_status":
-        previous_status,
-
-
-        "previous_failed_step":
-        previous_failed_step,
-
-
-        "previous_error_message":
-        previous_error
-
-
+        "repository": f"{owner}/{repo}",
+        "repo_url": repo_url,
+        "commit_id": commit_id,
+        "commit_message": commit_message,
+        "files_changed": len(changed_files),
+        "lines_added": lines_added,
+        "lines_deleted": lines_deleted,
+        "total_changes": lines_added + lines_deleted,
+        "dependency_file_changed": int(dependency_changed),
+        "test_file_changed": int(test_changed),
+        "workflow_changed": int(workflow_changed),
+        "source_file_changed": int(source_changed),
+        "risk_file_count": risk_count,
+        "changed_files": ", ".join(changed_files),
+        "previous_build_status": previous_status,
+        "previous_failed_step": previous_failed_step,
+        "previous_error_message": previous_error,
+        "repository_prior_runs": float(prior_runs_count),
+        "repository_prior_failure_rate": float(prior_failure_rate),
+        "workflow_prior_failure_rate": float(prior_failure_rate),
+        "workflow_failure_rate_3": float(failure_rate_3),
+        "hours_since_previous_workflow_run": float(hours_since_last_run),
+        "hours_since_previous_failure": float(hours_since_last_failure),
     }
