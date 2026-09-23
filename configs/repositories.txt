@@ -1,0 +1,36 @@
+# Pilot candidates. The collector records all raw runs; eligibility is evaluated
+# later using the minimum-run and minimum-failure rules in research.json.
+django/django
+fastapi/fastapi
+numpy/numpy
+pallets/flask
+pandas-dev/pandas
+psf/requests
+pytest-dev/pytest
+scikit-learn/scikit-learn
+spring-projects/spring-petclinic
+tiangolo/typer
+
+apache/commons-lang
+apache/kafka
+apache/maven
+elastic/elasticsearch
+google/guava
+spring-projects/spring-boot
+
+axios/axios
+facebook/react
+nestjs/nest
+nodejs/node
+prettier/prettier
+reduxjs/redux
+vercel/next.js
+
+gin-gonic/gin
+golang/go
+kubernetes/kubernetes
+prometheus/prometheus
+
+curl/curl
+opencv/opencv
+redis/redis
