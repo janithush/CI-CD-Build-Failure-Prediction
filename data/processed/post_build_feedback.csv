@@ -12,3 +12,4 @@ timestamp,commit_id,predicted_risk_score,predicted_risk_level,actual_result,actu
 2026-06-14 22:43:38,mhdshukry/CI-CD-Build-Failure-Prediction,f9ab2808503bff07631c1f9eaee667b88f9d2243,47.89,Medium Risk,success,Build completed successfully. No error message.,
 2026-06-14 22:53:49,mhdshukry/CI-CD-Build-Failure-Prediction,55003188111ea543d56ba741c963bf53a6ed9d3a,18.12,Low Risk,success,Build completed successfully. No error message.,
 2026-06-15 11:17:06,mhdshukry/CI-CD-Build-Failure-Prediction,5086434199ee403077d41bd8d051f05fc7b4d9b6,15.62,Low Risk,success,Build completed successfully. No error message.,
+2026-09-20 14:25:35,kubernetes/kubernetes,400031d69530e018d5c001a922d3c5d2afaba954,23.95,Low Risk,success,Build completed successfully. No error message.,
