@@ -87,3 +87,33 @@ python local_analyzer/test_local_repo.py
 - The API writes prediction history to `history/prediction_history.csv`.
 - The feedback endpoint writes to `data/processed/post_build_feedback.csv`.
 - If the model file is missing, retrain it with `models/train_improved_models.py` before calling the prediction endpoint.
+
+## Research Dataset Pipeline
+
+The original CSV/model is a prototype baseline. The leakage-safe research pipeline uses one GitHub Actions workflow-run attempt per observation and stores normalized raw data in SQLite.
+
+1. Put a GitHub token in `.env` as `GITHUB_TOKEN=...`.
+2. Review `configs/repositories.txt` and `configs/research.json`.
+3. Collect runs, workflows, commits, changed files, jobs and failed steps:
+
+```bash
+python dataset_collector/github_actions_research_collector.py --include-jobs
+```
+
+For a small collection test:
+
+```bash
+python dataset_collector/github_actions_research_collector.py --repository pallets/flask
+```
+
+The collector automatically creates an ignored pseudonymization salt at `data/research/.hash_salt` when `BUILDRISK_HASH_SALT` is not supplied.
+
+Validate and prepare leakage-safe features/splits:
+
+```bash
+python preprocessing/validate_research_dataset.py
+python preprocessing/build_research_features.py
+python models/create_research_splits.py
+```
+
+The governing definitions and evaluation rules are documented in `docs/research_protocol.md`.
