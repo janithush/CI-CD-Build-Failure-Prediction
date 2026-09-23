@@ -1,0 +1,30 @@
+{
+  "dataset": {
+    "unit": "workflow_run_attempt",
+    "primary_key": ["repository", "run_id", "run_attempt"],
+    "included_conclusions": ["success", "failure"],
+    "excluded_workflow_keywords": [
+      "stale",
+      "label",
+      "lock inactive",
+      "close inactive",
+      "greetings"
+    ],
+    "minimum_completed_runs_per_repository": 200,
+    "minimum_failures_per_repository": 20
+  },
+  "collection": {
+    "months_of_history": 24,
+    "per_page": 100,
+    "request_timeout_seconds": 30,
+    "maximum_retries": 5,
+    "retry_backoff_seconds": 2
+  },
+  "splits": {
+    "train_fraction": 0.7,
+    "validation_fraction": 0.15,
+    "test_fraction": 0.15,
+    "group_columns": ["repository", "commit_id"]
+  },
+  "random_seed": 42
+}
