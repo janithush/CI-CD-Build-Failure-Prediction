@@ -540,6 +540,246 @@
       margin-top: 10px;
     }
 
+    /* Toast Notifications */
+    #toastContainer {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .toast {
+      pointer-events: auto;
+      min-width: 300px;
+      max-width: 440px;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      background: rgba(14, 23, 23, 0.96);
+      border: 1px solid var(--line);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transform: translateX(120%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+    .toast.show {
+      transform: translateX(0);
+    }
+    .toast.success {
+      border-color: rgba(210, 255, 40, 0.4);
+      border-left: 5px solid var(--lime);
+    }
+    .toast.error {
+      border-color: rgba(255, 92, 92, 0.4);
+      border-left: 5px solid var(--red);
+    }
+    .toast.info {
+      border-color: rgba(100, 255, 218, 0.4);
+      border-left: 5px solid var(--cyan);
+    }
+
+    /* Repository Quick Selection Chips */
+    .repo-chips {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .repo-chips small {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-right: 4px;
+    }
+    .repo-chip {
+      background: rgba(240, 239, 244, 0.06);
+      border: 1px solid rgba(240, 239, 244, 0.12);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .repo-chip:hover {
+      background: rgba(210, 255, 40, 0.15);
+      border-color: var(--lime);
+      color: var(--lime);
+      transform: translateY(-1px);
+    }
+
+    /* AI Explanations & Suggestions Badges */
+    .item-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 900;
+      padding: 2px 7px;
+      border-radius: 6px;
+      margin-right: 5px;
+      letter-spacing: 0.4px;
+      vertical-align: middle;
+      text-transform: uppercase;
+    }
+    .item-tag.tag-high {
+      background: rgba(255, 92, 92, 0.18);
+      color: var(--red);
+      border: 1px solid rgba(255, 92, 92, 0.35);
+    }
+    .item-tag.tag-medium {
+      background: rgba(255, 170, 0, 0.18);
+      color: var(--orange);
+      border: 1px solid rgba(255, 170, 0, 0.35);
+    }
+    .item-tag.tag-low {
+      background: rgba(210, 255, 40, 0.15);
+      color: var(--lime);
+      border: 1px solid rgba(210, 255, 40, 0.35);
+    }
+
+    /* Password / Token Input with Toggle */
+    .input-with-toggle {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .input-with-toggle input {
+      width: 100%;
+      padding-right: 42px !important;
+    }
+    .toggle-btn {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s ease;
+    }
+    .toggle-btn:hover {
+      color: var(--white);
+    }
+
+    /* Copy Button */
+    .copy-btn {
+      background: rgba(240, 239, 244, 0.08);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-left: 8px;
+      transition: all 0.2s ease;
+    }
+    .copy-btn:hover {
+      background: rgba(210, 255, 40, 0.18);
+      color: var(--lime);
+      border-color: var(--lime);
+    }
+
+    /* Dynamic Visual Risk Meter */
+    .risk-meter {
+      margin-top: 14px;
+      width: 100%;
+    }
+    .risk-meter-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(240, 239, 244, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+    .risk-meter-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: var(--lime);
+      transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1), background 0.6s ease;
+    }
+    .risk-meter-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 5px;
+      font-weight: 700;
+    }
+
+    /* History Table Risk Badges */
+    .badge-low {
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #10b981;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+    .badge-medium {
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #f59e0b;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+    .badge-high {
+      background: rgba(239, 68, 68, 0.14);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #ef4444;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    /* Model Specs Grid */
+    .model-specs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .spec-item {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .spec-item.wide {
+      grid-column: span 2;
+    }
+    .spec-item small {
+      color: var(--muted);
+      font-size: 11px;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .spec-item strong {
+      font-size: 13px;
+      color: var(--white);
+    }
+
     @media(max-width:1200px) {
 
       .top,
@@ -578,6 +818,8 @@
 </head>
 
 <body>
+
+  <div id="toastContainer"></div>
 
   <div class="page">
 
@@ -623,22 +865,22 @@
 
         <div class="kpi">
           <small>Dataset</small>
-          <strong>2290</strong>
+          <strong id="kpiDataset">24,479</strong>
         </div>
 
         <div class="kpi">
           <small>Failures</small>
-          <strong>319</strong>
+          <strong id="kpiFailures">2,049</strong>
         </div>
 
         <div class="kpi">
           <small>Best Model</small>
-          <strong>XGB</strong>
+          <strong id="kpiModel">Random Forest</strong>
         </div>
 
         <div class="kpi">
-          <small>ROC-AUC</small>
-          <strong>77.6%</strong>
+          <small>Test ROC-AUC</small>
+          <strong id="kpiRocAuc">92.9%</strong>
         </div>
 
       </div>
@@ -659,6 +901,14 @@
             <span class="status" id="connectionStatus">Not Connected</span>
           </div>
 
+          <div class="repo-chips">
+            <small>Quick Pick:</small>
+            <span class="repo-chip" onclick="selectRepo('https://github.com/pallets/flask')">pallets/flask</span>
+            <span class="repo-chip" onclick="selectRepo('https://github.com/tiangolo/typer')">tiangolo/typer</span>
+            <span class="repo-chip" onclick="selectRepo('https://github.com/fastapi/fastapi')">fastapi/fastapi</span>
+            <span class="repo-chip" onclick="selectRepo('https://github.com/axios/axios')">axios/axios</span>
+          </div>
+
           <div class="form-grid">
 
             <div class="group wide">
@@ -667,8 +917,11 @@
             </div>
 
             <div class="group wide">
-              <label>GitHub Token - private repository only</label>
-              <input id="github_token" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxx">
+              <label>GitHub Personal Access Token (Optional — System Token Active)</label>
+              <div class="input-with-toggle">
+                <input id="github_token" type="password" placeholder="Optional (Leave blank to use system token)">
+                <button type="button" class="toggle-btn" onclick="toggleTokenVisibility()" id="toggleTokenBtn" title="Toggle visibility">👁️</button>
+              </div>
             </div>
 
           </div>
@@ -744,7 +997,10 @@
 
           <div class="commit-box">
             <small>Commit ID</small>
-            <p id="commitId">--</p>
+            <p style="display: flex; align-items: center; justify-content: space-between;">
+              <span id="commitId">--</span>
+              <button type="button" class="copy-btn" onclick="copyCommitSha()" id="copyShaBtn">Copy SHA</button>
+            </p>
           </div>
 
           <div class="commit-box">
@@ -795,7 +1051,7 @@
 
           <div class="card-head">
             <h3>Post-Build Feedback</h3>
-            <span class="badge">Learning</span>
+            <span class="badge">Audit & Retraining Queue</span>
           </div>
 
           <div class="form-grid">
@@ -859,17 +1115,28 @@
 
           <div class="card-head">
             <h3>Prediction Output</h3>
-            <span class="badge">AI Result</span>
+            <span class="badge">Calibrated AI</span>
           </div>
 
           <div class="output-top">
 
             <div class="score-card">
 
-              <small>Final Failure Risk</small>
+              <small>Calibrated Failure Risk</small>
 
               <div class="score" id="riskScore">
                 --
+              </div>
+
+              <div class="risk-meter">
+                <div class="risk-meter-bar">
+                  <div class="risk-meter-fill" id="riskMeterFill"></div>
+                </div>
+                <div class="risk-meter-labels">
+                  <span>0% (Safe)</span>
+                  <span id="riskThresholdLabel">41.5% Cutoff</span>
+                  <span>100% (Fail)</span>
+                </div>
               </div>
 
               <div class="level" id="riskLevel">
@@ -892,7 +1159,7 @@
                 </div>
 
                 <div class="metric">
-                  <small>Rule Score</small>
+                  <small>Decision Cutoff</small>
                   <strong id="ruleScore">--</strong>
                 </div>
 
@@ -913,21 +1180,21 @@
                 </div>
 
                 <div class="detail">
-                  <h4>Post-Build Learning</h4>
+                  <h4>Model Status</h4>
                   <ul id="learning">
                     <li>Waiting for prediction</li>
                   </ul>
                 </div>
 
                 <div class="detail">
-                  <h4>AI Explanation</h4>
+                  <h4>AI Explanation & Reasons</h4>
                   <ul id="reasons">
                     <li>No prediction yet</li>
                   </ul>
                 </div>
 
                 <div class="detail">
-                  <h4>Suggested Fixes</h4>
+                  <h4>Suggested Pre-Push Actions</h4>
                   <ul id="suggestions">
                     <li>No suggestions yet</li>
                   </ul>
@@ -941,13 +1208,47 @@
 
         </div>
 
+        <!-- MODEL TRANSPARENCY CARD -->
+        <div class="card" style="margin-top: 14px;">
+          <div class="card-head">
+            <h3>Model Architecture & Verification</h3>
+            <span class="badge" style="background: rgba(100, 255, 218, .15); color: var(--cyan); border-color: rgba(100, 255, 218, .3);">Validated</span>
+          </div>
+          <div class="model-specs-grid">
+            <div class="spec-item">
+              <small>Selected Architecture</small>
+              <strong id="specModel">Random Forest (Depth 10)</strong>
+            </div>
+            <div class="spec-item">
+              <small>Probability Calibration</small>
+              <strong id="specCalib">Sigmoid (Platt Scaling)</strong>
+            </div>
+            <div class="spec-item">
+              <small>Held-Out Test ROC-AUC</small>
+              <strong id="specRoc" style="color: var(--lime);">92.88%</strong>
+            </div>
+            <div class="spec-item">
+              <small>Held-Out Test PR-AUC</small>
+              <strong id="specPr" style="color: var(--cyan);">64.20%</strong>
+            </div>
+            <div class="spec-item wide">
+              <small>Optimal Decision Threshold</small>
+              <strong id="specThreshold">41.5% Failure Probability Cutoff</strong>
+            </div>
+            <div class="spec-item wide">
+              <small>Evaluated Benchmark Dataset</small>
+              <strong>24,479 Workflow Runs (Zero-Overlap Chronological Split)</strong>
+            </div>
+          </div>
+        </div>
+
 
         <!-- HISTORY WITH PAGINATION -->
-        <div class="card">
+        <div class="card" style="margin-top: 14px;">
 
           <div class="card-head">
             <h3>Prediction History</h3>
-            <span class="badge">Learning Log</span>
+            <span class="badge">SQLite Log</span>
           </div>
 
           <table class="history-table">
@@ -974,6 +1275,7 @@
             <button onclick="previousHistoryPage()">Previous</button>
             <span id="historyPageText">Page 1</span>
             <button onclick="nextHistoryPage()">Next</button>
+            <button onclick="loadHistory()" title="Reload history from SQLite" style="margin-left: 10px;">↻ Refresh</button>
           </div>
 
         </div>
@@ -1038,31 +1340,82 @@
     }
 
 
-    function saveState() {
-        const repoUrl = document.getElementById("github_repo_url").value.trim();
-        const token = document.getElementById("github_token").value.trim();
-
-        localStorage.setItem("buildrisk_repo_url", repoUrl);
-
-        if (token) {
-          localStorage.setItem("buildrisk_token", token);
-        }
-
-        if (connectedCommitData) {
-          localStorage.setItem("buildrisk_commit", JSON.stringify(connectedCommitData));
-          localStorage.setItem("buildrisk_repo", connectedCommitData.repository || "");
-        }
-
-        if (connectedPrediction) {
-          localStorage.setItem("buildrisk_prediction", JSON.stringify(connectedPrediction));
-        }
+    function renderListSafely(elementId, items, defaultText) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      el.innerHTML = "";
+      if (!items || items.length === 0) {
+        const li = document.createElement("li");
+        li.textContent = defaultText;
+        el.appendChild(li);
+        return;
       }
+      items.forEach(item => {
+        const li = document.createElement("li");
+        const match = typeof item === "string" ? item.match(/^(\[[A-Z0-9\s\/\-_]+\])\s*(.*)$/) : null;
+        if (match) {
+          const tagSpan = document.createElement("span");
+          const tagText = match[1];
+          const textPart = match[2];
+          tagSpan.textContent = tagText.replace(/[\[\]]/g, "");
+          tagSpan.className = "item-tag";
+          if (
+            tagText.includes("HIGH") ||
+            tagText.includes("CRITICAL") ||
+            tagText.includes("PRIOR FAILURE") ||
+            tagText.includes("DEPENDENCY RISK") ||
+            tagText.includes("WORKFLOW RISK") ||
+            tagText.includes("TEST GAP") ||
+            tagText.includes("STEP FIX") ||
+            tagText.includes("SPLIT")
+          ) {
+            tagSpan.classList.add("tag-high");
+          } else if (
+            tagText.includes("REVIEW") ||
+            tagText.includes("ADVISORY") ||
+            tagText.includes("MEDIUM") ||
+            tagText.includes("MODERATE") ||
+            tagText.includes("CONFIG") ||
+            tagText.includes("MANUAL") ||
+            tagText.includes("LINT") ||
+            tagText.includes("ADD TESTS") ||
+            tagText.includes("FILE REVIEW") ||
+            tagText.includes("DEPENDENCY CHECK")
+          ) {
+            tagSpan.classList.add("tag-medium");
+          } else {
+            tagSpan.classList.add("tag-low");
+          }
+          li.appendChild(tagSpan);
+          li.appendChild(document.createTextNode(" " + textPart));
+        } else {
+          li.textContent = item;
+        }
+        el.appendChild(li);
+      });
+    }
+
+    function saveState() {
+      const repoUrl = document.getElementById("github_repo_url").value.trim();
+      localStorage.setItem("buildrisk_repo_url", repoUrl);
+
+      // Security: Never save personal access tokens in localStorage
+      localStorage.removeItem("buildrisk_token");
+
+      if (connectedCommitData) {
+        localStorage.setItem("buildrisk_commit", JSON.stringify(connectedCommitData));
+        localStorage.setItem("buildrisk_repo", connectedCommitData.repository || "");
+      }
+
+      if (connectedPrediction) {
+        localStorage.setItem("buildrisk_prediction", JSON.stringify(connectedPrediction));
+      }
+    }
 
     function clearSavedPrediction() {
       connectedPrediction = null;
       localStorage.removeItem("buildrisk_prediction");
     }
-
 
     function clearPredictionOutput() {
       clearSavedPrediction();
@@ -1075,17 +1428,10 @@
       document.getElementById("ruleScore").innerText = "--";
       document.getElementById("errorCategory").innerText = "--";
 
-      document.getElementById("riskyFiles").innerHTML =
-        "<li>No risky files detected yet</li>";
-
-      document.getElementById("learning").innerHTML =
-        "<li>Waiting for prediction</li>";
-
-      document.getElementById("reasons").innerHTML =
-        "<li>No prediction yet</li>";
-
-      document.getElementById("suggestions").innerHTML =
-        "<li>No suggestions yet</li>";
+      renderListSafely("riskyFiles", [], "No risky files detected yet");
+      renderListSafely("learning", [], "Waiting for prediction");
+      renderListSafely("reasons", [], "No prediction yet");
+      renderListSafely("suggestions", [], "No suggestions yet");
     }
 
 
@@ -1144,42 +1490,91 @@
     }
 
 
+    function showToast(message, type = "info") {
+      const container = document.getElementById("toastContainer");
+      if (!container) return;
+      const toast = document.createElement("div");
+      toast.className = `toast ${type}`;
+      const icon = type === "success" ? "✓" : (type === "error" ? "✕" : "ℹ");
+      toast.textContent = `${icon}  ${message}`;
+      container.appendChild(toast);
+      setTimeout(() => toast.classList.add("show"), 10);
+      setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => toast.remove(), 350);
+      }, 4000);
+    }
+
+    function selectRepo(url) {
+      document.getElementById("github_repo_url").value = url;
+      showToast(`Selected: ${url.replace('https://github.com/', '')}`, "info");
+    }
+
+    function toggleTokenVisibility() {
+      const input = document.getElementById("github_token");
+      const btn = document.getElementById("toggleTokenBtn");
+      if (input.type === "password") {
+        input.type = "text";
+        btn.textContent = "🙈";
+      } else {
+        input.type = "password";
+        btn.textContent = "👁️";
+      }
+    }
+
+    function copyCommitSha() {
+      const sha = document.getElementById("commitId").innerText.trim();
+      if (!sha || sha === "--") {
+        showToast("No commit SHA available to copy", "info");
+        return;
+      }
+      navigator.clipboard.writeText(sha).then(() => {
+        showToast(`Copied commit SHA: ${sha.slice(0, 8)}...`, "success");
+      }).catch(() => {
+        showToast("Unable to copy to clipboard", "error");
+      });
+    }
+
     function renderPrediction(result) {
-      document.getElementById("riskScore").innerText =
-        result.final_failure_risk_score + "%";
+      const score = Math.min(100, Math.max(0, Number(result.final_failure_risk_score || 0)));
 
-      document.getElementById("riskLevel").innerText =
-        result.risk_level;
+      document.getElementById("riskScore").innerText = score + "%";
+      document.getElementById("riskLevel").innerText = result.risk_level;
+      document.getElementById("predictionText").innerText = result.prediction;
+      document.getElementById("mlScore").innerText = result.ml_failure_probability + "%";
 
-      document.getElementById("predictionText").innerText =
-        result.prediction;
+      const fill = document.getElementById("riskMeterFill");
+      if (fill) {
+        fill.style.width = score + "%";
+        if (score >= 41.5) {
+          fill.style.background = "var(--red)";
+        } else if (score >= 25) {
+          fill.style.background = "var(--orange)";
+        } else {
+          fill.style.background = "var(--lime)";
+        }
+      }
 
-      document.getElementById("mlScore").innerText =
-        result.ml_failure_probability + "%";
-
-      document.getElementById("ruleScore").innerText =
-        result.rule_based_risk_score + "%";
+      if (result.decision_threshold) {
+        document.getElementById("ruleScore").innerText =
+          result.decision_threshold + "% (Threshold)";
+        const label = document.getElementById("riskThresholdLabel");
+        if (label) label.innerText = `${result.decision_threshold}% Cutoff`;
+      } else {
+        document.getElementById("ruleScore").innerText =
+          (result.rule_based_risk_score ?? "--") + "%";
+      }
 
       document.getElementById("errorCategory").innerText =
-        result.error_category;
+        result.error_category || "None";
 
-      document.getElementById("riskyFiles").innerHTML =
-        result.risky_files && result.risky_files.length
-          ? result.risky_files.map(x => `<li>${x}</li>`).join("")
-          : "<li>No risky files detected</li>";
+      renderListSafely("riskyFiles", result.risky_files, "No risky files detected");
 
-      document.getElementById("learning").innerHTML =
-        `<li>${result.post_build_learning_status}</li>`;
+      const learningMsg = result.post_build_learning_status || (result.model_info ? `Active Model: ${result.model_info.name} (Calibrated PR-AUC: ${result.model_info.test_pr_auc})` : "Model calibrated");
+      renderListSafely("learning", [learningMsg], "Waiting for prediction");
 
-      document.getElementById("reasons").innerHTML =
-        result.reasons && result.reasons.length
-          ? result.reasons.map(x => `<li>${x}</li>`).join("")
-          : "<li>No reasons generated</li>";
-
-      document.getElementById("suggestions").innerHTML =
-        result.suggestions && result.suggestions.length
-          ? result.suggestions.map(x => `<li>${x}</li>`).join("")
-          : "<li>No suggestions generated</li>";
+      renderListSafely("reasons", result.reasons, "No reasons generated");
+      renderListSafely("suggestions", result.suggestions, "No suggestions generated");
     }
 
 
@@ -1201,126 +1596,116 @@
 
       if (status === "success") {
         document.getElementById("feedback_actual_result").value = "success";
-
         document.getElementById("feedback_error_message").value =
           "Build completed successfully. No error message.";
-
         document.getElementById("feedbackBtn").disabled =
           connectedPrediction ? false : true;
       }
 
       else if (status === "failure") {
         document.getElementById("feedback_actual_result").value = "failure";
-
         document.getElementById("feedback_error_message").value =
           connectedCommitData?.previous_error_message ||
           "Build failed. Error log not available.";
-
         document.getElementById("feedbackBtn").disabled =
           connectedPrediction ? false : true;
       }
 
       else if (status === "cancelled" || status === "timed_out") {
         document.getElementById("feedback_actual_result").value = "failure";
-
         document.getElementById("feedback_error_message").value =
           `Build ${status}. Treating as unsuccessful CI result.`;
-
         document.getElementById("feedbackBtn").disabled =
           connectedPrediction ? false : true;
       }
 
       else {
         document.getElementById("feedback_actual_result").value = "unknown";
-
         document.getElementById("feedback_failed_step").value = "";
-
         document.getElementById("feedback_error_message").value =
           "Build is still running or final result is not available yet.";
-
         document.getElementById("feedbackBtn").disabled = true;
       }
     }
 
 
     function restoreSavedState() {
-        const savedCommit = localStorage.getItem("buildrisk_commit");
-        const savedPrediction = localStorage.getItem("buildrisk_prediction");
-        const savedRepoUrl = localStorage.getItem("buildrisk_repo_url");
-        const savedToken = localStorage.getItem("buildrisk_token");
+      const savedCommit = localStorage.getItem("buildrisk_commit");
+      const savedPrediction = localStorage.getItem("buildrisk_prediction");
+      const savedRepoUrl = localStorage.getItem("buildrisk_repo_url");
 
-        if (savedRepoUrl) {
-          document.getElementById("github_repo_url").value = savedRepoUrl;
-        }
+      // Security: Purge any stored token from browser storage
+      localStorage.removeItem("buildrisk_token");
 
-        if (savedToken) {
-          document.getElementById("github_token").value = savedToken;
-        }
-
-        if (savedCommit) {
-          connectedCommitData = JSON.parse(savedCommit);
-
-          updateFetchedCommitFeatures(connectedCommitData);
-          updatePostBuildEvidence(connectedCommitData);
-
-          setConnectionStatus("connected", "Connected");
-
-          document.getElementById("predictBtn").disabled = false;
-
-          document.getElementById("predictionText").innerText =
-            "Repository connected. Click Predict Risk.";
-        }
-
-        if (savedPrediction) {
-          connectedPrediction = JSON.parse(savedPrediction);
-
-          renderPrediction(connectedPrediction);
-          fillFeedbackForm();
-        }
+      if (savedRepoUrl) {
+        document.getElementById("github_repo_url").value = savedRepoUrl;
       }
 
-      function changeRepository() {
-          localStorage.removeItem("buildrisk_commit");
-          localStorage.removeItem("buildrisk_prediction");
-          localStorage.removeItem("buildrisk_repo");
-          localStorage.removeItem("buildrisk_repo_url");
-          localStorage.removeItem("buildrisk_token");
+      if (savedCommit) {
+        connectedCommitData = JSON.parse(savedCommit);
 
-          connectedCommitData = null;
-          connectedPrediction = null;
+        updateFetchedCommitFeatures(connectedCommitData);
+        updatePostBuildEvidence(connectedCommitData);
 
-          document.getElementById("github_repo_url").value = "";
-          document.getElementById("github_token").value = "";
+        setConnectionStatus("connected", "Connected");
 
-          setConnectionStatus("idle", "Not Connected");
+        document.getElementById("predictBtn").disabled = false;
 
-          document.getElementById("predictBtn").disabled = true;
-          document.getElementById("feedbackBtn").disabled = true;
+        document.getElementById("predictionText").innerText =
+          "Repository connected. Click Predict Risk.";
+      }
 
-          clearPredictionOutput();
+      if (savedPrediction) {
+        connectedPrediction = JSON.parse(savedPrediction);
 
-          updateFetchedCommitFeatures({
-            files_changed: "--",
-            lines_added: "--",
-            lines_deleted: "--",
-            total_changes: "--",
-            dependency_file_changed: 0,
-            workflow_changed: 0,
-            test_file_changed: 0,
-            source_file_changed: 0,
-            commit_id: "--",
-            commit_message: "--",
-            changed_files: "--"
-          });
+        renderPrediction(connectedPrediction);
+        fillFeedbackForm();
+      }
+    }
 
-          updatePostBuildEvidence({
-            previous_build_status: "--",
-            previous_failed_step: "--",
-            previous_error_message: "--"
-          });
+    function changeRepository() {
+      localStorage.removeItem("buildrisk_commit");
+      localStorage.removeItem("buildrisk_prediction");
+      localStorage.removeItem("buildrisk_repo");
+      localStorage.removeItem("buildrisk_repo_url");
+      localStorage.removeItem("buildrisk_token");
 
-          loadHistory();
-        }
+      connectedCommitData = null;
+      connectedPrediction = null;
+
+      document.getElementById("github_repo_url").value = "";
+      document.getElementById("github_token").value = "";
+
+      setConnectionStatus("idle", "Not Connected");
+
+      document.getElementById("predictBtn").disabled = true;
+      document.getElementById("feedbackBtn").disabled = true;
+
+      clearPredictionOutput();
+
+      updateFetchedCommitFeatures({
+        files_changed: "--",
+        lines_added: "--",
+        lines_deleted: "--",
+        total_changes: "--",
+        dependency_file_changed: 0,
+        workflow_changed: 0,
+        test_file_changed: 0,
+        source_file_changed: 0,
+        commit_id: "--",
+        commit_message: "--",
+        changed_files: "--"
+      });
+
+      updatePostBuildEvidence({
+        previous_build_status: "--",
+        previous_failed_step: "--",
+        previous_error_message: "--"
+      });
+
+      loadHistory();
+      showToast("Repository reset", "info");
+    }
 
 
     async function connectGithubRepo() {
@@ -1336,7 +1721,6 @@
       setConnectionStatus("loading", "Connecting...");
 
       connectedCommitData = null;
-
       clearPredictionOutput();
 
       const data = {
@@ -1355,7 +1739,7 @@
 
         if (result.error) {
           setConnectionStatus("failed", "Connection Failed");
-          alert(result.error);
+          showToast(result.error, "error");
           return;
         }
 
@@ -1365,7 +1749,6 @@
         updatePostBuildEvidence(connectedCommitData);
 
         setConnectionStatus("connected", "Connected");
-
         predictBtn.disabled = false;
 
         document.getElementById("predictionText").innerText =
@@ -1375,10 +1758,11 @@
         fillFeedbackForm();
         await loadHistory();
         startAutoFetchWatcher();
+        showToast("Repository connected successfully!", "success");
 
       } catch (error) {
         setConnectionStatus("failed", "Connection Failed");
-        alert("Unable to connect repository. Check API is running.");
+        showToast("Unable to connect repository. Check API is running.", "error");
       } finally {
         connectBtn.disabled = false;
         connectBtn.innerText = "Connect & Fetch Repository";
@@ -1404,19 +1788,11 @@
         });
 
         const result = await response.json();
-
-        if (result.error) {
-          return;
-        }
+        if (result.error) return;
 
         const latestCommit = result.commit_analysis;
-
-        const commitChanged =
-          latestCommit.commit_id !== connectedCommitData.commit_id;
-
-        const buildStatusChanged =
-          latestCommit.previous_build_status !==
-          connectedCommitData.previous_build_status;
+        const commitChanged = latestCommit.commit_id !== connectedCommitData.commit_id;
+        const buildStatusChanged = latestCommit.previous_build_status !== connectedCommitData.previous_build_status;
 
         if (commitChanged || buildStatusChanged) {
           connectedCommitData = latestCommit;
@@ -1426,13 +1802,12 @@
 
           if (commitChanged) {
             clearPredictionOutput();
-
             document.getElementById("predictionText").innerText =
               "New commit detected. Click Predict Risk.";
+            showToast("New commit detected on GitHub!", "info");
           }
 
           fillFeedbackForm();
-
           document.getElementById("predictBtn").disabled = false;
 
           saveState();
@@ -1440,7 +1815,7 @@
         }
 
       } catch (error) {
-        console.log("Auto fetch failed");
+        console.log("Auto fetch polling paused");
       }
     }
 
@@ -1449,22 +1824,17 @@
       if (autoFetchTimer) {
         clearInterval(autoFetchTimer);
       }
-
-      autoFetchTimer = setInterval(
-        autoFetchLatestCommit,
-        30000
-      );
+      autoFetchTimer = setInterval(autoFetchLatestCommit, 30000);
     }
 
 
     async function predictConnectedRepo() {
       if (!connectedCommitData) {
-        alert("Please connect a GitHub repository first.");
+        showToast("Please connect a GitHub repository first.", "info");
         return;
       }
 
       const predictBtn = document.getElementById("predictBtn");
-
       predictBtn.disabled = true;
       predictBtn.innerText = "Predicting...";
 
@@ -1478,7 +1848,7 @@
         const result = await response.json();
 
         if (result.error) {
-          alert(result.error);
+          showToast(result.error, "error");
           return;
         }
 
@@ -1489,9 +1859,10 @@
 
         saveState();
         await loadHistory();
+        showToast(`Prediction: ${connectedPrediction.risk_level} (${connectedPrediction.final_failure_risk_score}%)`, "success");
 
       } catch (error) {
-        alert("Unable to predict risk. Check API is running.");
+        showToast("Unable to predict risk. Check API is running.", "error");
       } finally {
         predictBtn.disabled = false;
         predictBtn.innerText = "Predict Risk";
@@ -1501,12 +1872,12 @@
 
     async function submitFeedback() {
       if (!connectedCommitData || !connectedPrediction) {
-        alert("Please connect repository and predict risk first.");
+        showToast("Please connect repository and predict risk first.", "info");
         return;
       }
 
       if (!isBuildFinished(connectedCommitData.previous_build_status)) {
-        alert("Build result is not finished yet. Feedback can be submitted after CI/CD completes.");
+        showToast("Build is still in progress. Feedback can be recorded once CI finishes.", "info");
         fillFeedbackForm();
         return;
       }
@@ -1514,7 +1885,6 @@
       fillFeedbackForm();
 
       const feedbackBtn = document.getElementById("feedbackBtn");
-
       feedbackBtn.disabled = true;
       feedbackBtn.innerText = "Submitting...";
 
@@ -1539,9 +1909,10 @@
 
         document.getElementById("feedbackStatus").innerText =
           result.message + " - " + result.learning_status;
+        showToast("Post-build feedback queued successfully!", "success");
 
       } catch (error) {
-        alert("Unable to submit post-build feedback.");
+        showToast("Unable to submit post-build feedback.", "error");
       } finally {
         fillFeedbackForm();
         feedbackBtn.innerText = "Submit Post-Build Feedback";
@@ -1561,15 +1932,19 @@
         );
 
         const data = await response.json();
-
         historyData = data.history.reverse();
         historyPage = 1;
-
         renderHistoryPage();
 
       } catch (error) {
-        document.getElementById("historyBody").innerHTML =
-          "<tr><td colspan='5'>Unable to load history</td></tr>";
+        const historyBody = document.getElementById("historyBody");
+        historyBody.innerHTML = "";
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 5;
+        td.textContent = "Unable to load history";
+        tr.appendChild(td);
+        historyBody.appendChild(tr);
       }
     }
 
@@ -1579,23 +1954,57 @@
       const end = start + historyPageSize;
 
       const pageItems = historyData.slice(start, end);
+      const historyBody = document.getElementById("historyBody");
+      historyBody.innerHTML = "";
 
-      let html = "";
+      if (!pageItems || pageItems.length === 0) {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 5;
+        td.textContent = "No history available";
+        tr.appendChild(td);
+        historyBody.appendChild(tr);
+      } else {
+        pageItems.forEach(item => {
+          const tr = document.createElement("tr");
 
-      pageItems.forEach(item => {
-        html += `
-        <tr>
-          <td>${item.timestamp}</td>
-          <td><span class="history-badge">${item.source}</span></td>
-          <td class="history-score">${item.risk_score}%</td>
-          <td>${item.risk_level}</td>
-          <td>${item.error_category}</td>
-        </tr>
-      `;
-      });
+          const tdTime = document.createElement("td");
+          tdTime.textContent = item.timestamp || "--";
 
-      document.getElementById("historyBody").innerHTML =
-        html || "<tr><td colspan='5'>No history available</td></tr>";
+          const tdSource = document.createElement("td");
+          const spanBadge = document.createElement("span");
+          spanBadge.className = "history-badge";
+          spanBadge.textContent = item.source || "--";
+          tdSource.appendChild(spanBadge);
+
+          const tdScore = document.createElement("td");
+          tdScore.className = "history-score";
+          tdScore.textContent = `${item.risk_score ?? "--"}%`;
+
+          const tdLevel = document.createElement("td");
+          const levelBadge = document.createElement("span");
+          const lvl = (item.risk_level || "").toLowerCase();
+          if (lvl.includes("high")) {
+            levelBadge.className = "badge-high";
+          } else if (lvl.includes("medium") || lvl.includes("review")) {
+            levelBadge.className = "badge-medium";
+          } else {
+            levelBadge.className = "badge-low";
+          }
+          levelBadge.textContent = item.risk_level || "Low Risk";
+          tdLevel.appendChild(levelBadge);
+
+          const tdError = document.createElement("td");
+          tdError.textContent = item.error_category || "None";
+
+          tr.appendChild(tdTime);
+          tr.appendChild(tdSource);
+          tr.appendChild(tdScore);
+          tr.appendChild(tdLevel);
+          tr.appendChild(tdError);
+          historyBody.appendChild(tr);
+        });
+      }
 
       const totalPages =
         Math.max(1, Math.ceil(historyData.length / historyPageSize));
@@ -1623,10 +2032,48 @@
       }
     }
 
+    async function checkApiHealth() {
+      const statusEl = document.getElementById("apiStatus");
+      if (!statusEl) return;
+      try {
+        const res = await fetch(`${API_BASE}/health`, { signal: AbortSignal.timeout(3000) });
+        if (res.ok) {
+          const data = await res.json();
+          statusEl.textContent = `● API LIVE (${data.model_version || "Calibrated"})`;
+          statusEl.style.color = "var(--lime)";
+          statusEl.style.borderColor = "rgba(210, 255, 40, .3)";
+
+          // Dynamically enrich UI model specs
+          if (data.metrics) {
+            if (data.metrics.roc_auc) {
+              const rocAucPct = (data.metrics.roc_auc * 100).toFixed(1) + "%";
+              document.getElementById("kpiRocAuc").innerText = rocAucPct;
+              document.getElementById("specRoc").innerText = (data.metrics.roc_auc * 100).toFixed(2) + "%";
+            }
+            if (data.metrics.pr_auc) {
+              document.getElementById("specPr").innerText = (data.metrics.pr_auc * 100).toFixed(2) + "%";
+            }
+            if (data.model_version) {
+              document.getElementById("kpiModel").innerText = data.model_version.replace(/_/g, " ").toUpperCase();
+              document.getElementById("specModel").innerText = data.model_version.replace(/_/g, " ");
+            }
+          }
+        } else {
+          statusEl.textContent = "● API ERROR";
+          statusEl.style.color = "var(--orange)";
+        }
+      } catch (e) {
+        statusEl.textContent = "● API OFFLINE";
+        statusEl.style.color = "var(--red)";
+        statusEl.style.borderColor = "rgba(255, 92, 92, .3)";
+      }
+    }
 
     restoreSavedState();
     loadHistory();
     startAutoFetchWatcher();
+    checkApiHealth();
+    setInterval(checkApiHealth, 15000);
   </script>
   </body>
   
