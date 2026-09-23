@@ -1,0 +1,246 @@
+{
+  "protocol": "docs/research_protocol.md",
+  "selected_model": "random_forest_depth_10",
+  "selection_metric": "PR_AUC",
+  "selection_results": {
+    "dummy_prior": {
+      "rows": 1174,
+      "failure_rate": 0.046848381601362864,
+      "threshold": 0.5,
+      "accuracy": 0.9531516183986372,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "mcc": 0.0,
+      "roc_auc": 0.5,
+      "pr_auc": 0.046848381601362864,
+      "brier_score": 0.04589809315331527,
+      "confusion_matrix": [
+        [
+          1119,
+          0
+        ],
+        [
+          55,
+          0
+        ]
+      ]
+    },
+    "logistic_c_0.1": {
+      "rows": 1174,
+      "failure_rate": 0.046848381601362864,
+      "threshold": 0.5,
+      "accuracy": 0.8943781942078365,
+      "precision": 0.271523178807947,
+      "recall": 0.7454545454545455,
+      "f1": 0.39805825242718446,
+      "mcc": 0.4084855743564792,
+      "roc_auc": 0.9044926476561864,
+      "pr_auc": 0.4432737889982176,
+      "brier_score": 0.0876573378599706,
+      "confusion_matrix": [
+        [
+          1009,
+          110
+        ],
+        [
+          14,
+          41
+        ]
+      ]
+    },
+    "logistic_c_1": {
+      "rows": 1174,
+      "failure_rate": 0.046848381601362864,
+      "threshold": 0.5,
+      "accuracy": 0.8977853492333902,
+      "precision": 0.25925925925925924,
+      "recall": 0.6363636363636364,
+      "f1": 0.3684210526315789,
+      "mcc": 0.36233273547201167,
+      "roc_auc": 0.8906003737102933,
+      "pr_auc": 0.401357617206473,
+      "brier_score": 0.0811302500240701,
+      "confusion_matrix": [
+        [
+          1019,
+          100
+        ],
+        [
+          20,
+          35
+        ]
+      ]
+    },
+    "decision_tree_depth_5": {
+      "rows": 1174,
+      "failure_rate": 0.046848381601362864,
+      "threshold": 0.5,
+      "accuracy": 0.8458262350936968,
+      "precision": 0.1971153846153846,
+      "recall": 0.7454545454545455,
+      "f1": 0.311787072243346,
+      "mcc": 0.32997302483385743,
+      "roc_auc": 0.874920789666098,
+      "pr_auc": 0.34027906354315024,
+      "brier_score": 0.11163078064910739,
+      "confusion_matrix": [
+        [
+          952,
+          167
+        ],
+        [
+          14,
+          41
+        ]
+      ]
+    },
+    "random_forest_depth_10": {
+      "rows": 1174,
+      "failure_rate": 0.046848381601362864,
+      "threshold": 0.5,
+      "accuracy": 0.8534923339011925,
+      "precision": 0.2146341463414634,
+      "recall": 0.8,
+      "f1": 0.3384615384615385,
+      "mcc": 0.3652093288864595,
+      "roc_auc": 0.8982858071329921,
+      "pr_auc": 0.46517734117121345,
+      "brier_score": 0.10407126530169869,
+      "confusion_matrix": [
+        [
+          958,
+          161
+        ],
+        [
+          11,
+          44
+        ]
+      ]
+    },
+    "xgboost_depth_3": {
+      "rows": 1174,
+      "failure_rate": 0.046848381601362864,
+      "threshold": 0.5,
+      "accuracy": 0.9114139693356048,
+      "precision": 0.304,
+      "recall": 0.6909090909090909,
+      "f1": 0.4222222222222222,
+      "mcc": 0.4200763514269754,
+      "roc_auc": 0.8985782760581688,
+      "pr_auc": 0.44153121942427825,
+      "brier_score": 0.06480686366558075,
+      "confusion_matrix": [
+        [
+          1032,
+          87
+        ],
+        [
+          17,
+          38
+        ]
+      ]
+    },
+    "xgboost_depth_5": {
+      "rows": 1174,
+      "failure_rate": 0.046848381601362864,
+      "threshold": 0.5,
+      "accuracy": 0.9293015332197615,
+      "precision": 0.3409090909090909,
+      "recall": 0.5454545454545454,
+      "f1": 0.4195804195804196,
+      "mcc": 0.396127627451401,
+      "roc_auc": 0.8913640425704769,
+      "pr_auc": 0.4392691137351969,
+      "brier_score": 0.0474240779876709,
+      "confusion_matrix": [
+        [
+          1061,
+          58
+        ],
+        [
+          25,
+          30
+        ]
+      ]
+    }
+  },
+  "calibration_method": "sigmoid",
+  "threshold_selection": "maximum F1 on final validation third",
+  "test_metrics": {
+    "rows": 3583,
+    "failure_rate": 0.08205414457158805,
+    "threshold": 0.4149999999999999,
+    "accuracy": 0.9366452693273792,
+    "precision": 0.6437768240343348,
+    "recall": 0.5102040816326531,
+    "f1": 0.5692599620493358,
+    "mcc": 0.5397824025493319,
+    "roc_auc": 0.928843413315463,
+    "pr_auc": 0.6419503966999487,
+    "brier_score": 0.047397747126923684,
+    "confusion_matrix": [
+      [
+        3206,
+        83
+      ],
+      [
+        144,
+        150
+      ]
+    ],
+    "confidence_intervals_95": {
+      "roc_auc": [
+        0.9145037198473689,
+        0.9426990247292271
+      ],
+      "pr_auc": [
+        0.5842401032123414,
+        0.6987592247276857
+      ],
+      "brier_score": [
+        0.04299679511579189,
+        0.05237653565692696
+      ]
+    }
+  },
+  "feature_columns": [
+    "files_changed",
+    "lines_added",
+    "lines_deleted",
+    "message_length",
+    "is_merge",
+    "parent_count",
+    "dependency_files_changed",
+    "test_files_changed",
+    "workflow_files_changed",
+    "source_files_changed",
+    "config_files_changed",
+    "file_extension_count",
+    "files_added",
+    "files_removed",
+    "files_renamed",
+    "workflow_prior_runs",
+    "repository_prior_runs",
+    "previous_workflow_result",
+    "workflow_prior_failure_rate",
+    "repository_prior_failure_rate",
+    "branch_prior_failure_rate",
+    "workflow_failure_rate_3",
+    "workflow_failure_rate_5",
+    "workflow_failure_rate_10",
+    "workflow_failure_rate_20",
+    "hours_since_previous_workflow_run",
+    "hours_since_previous_failure",
+    "commit_hour_utc",
+    "commit_day_of_week",
+    "is_weekend",
+    "churn_per_file",
+    "repository",
+    "workflow_id",
+    "workflow_name",
+    "event",
+    "branch",
+    "primary_language"
+  ]
+}
