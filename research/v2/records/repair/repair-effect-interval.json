@@ -1,0 +1,11 @@
+{
+  "paired_ap_change": -0.023672542353421533,
+  "commit_cluster_95_interval": [
+    -0.045721335440857214,
+    -0.0008486052413090092
+  ],
+  "rows": 3583,
+  "groups": 439,
+  "bootstrap_samples": 1000,
+  "not_causal_or_fresh_confirmation": true
+}

@@ -1,0 +1,321 @@
+{
+  "legacy-history_legacy-split": {
+    "model": "random_forest_depth_10",
+    "source_stages": {
+      "fit": {
+        "rows": 13869,
+        "failures": 1139
+      },
+      "selection": {
+        "rows": 1174,
+        "failures": 55
+      },
+      "calibration": {
+        "rows": 1174,
+        "failures": 89
+      },
+      "threshold": {
+        "rows": 1174,
+        "failures": 118
+      }
+    },
+    "metrics": {
+      "rows": 3583,
+      "failure_rate": 0.08205414457158805,
+      "threshold": 0.42499999999999993,
+      "accuracy": 0.9349706949483673,
+      "precision": 0.6276150627615062,
+      "recall": 0.5102040816326531,
+      "f1": 0.5628517823639775,
+      "mcc": 0.5314351475113335,
+      "roc_auc": 0.928424060411638,
+      "pr_auc": 0.6392665248144248,
+      "brier_score": 0.04794868015809636,
+      "confusion_matrix": [
+        [
+          3200,
+          89
+        ],
+        [
+          144,
+          150
+        ]
+      ]
+    },
+    "common_test_metrics": {
+      "rows": 3583,
+      "failure_rate": 0.08205414457158805,
+      "threshold": 0.42499999999999993,
+      "accuracy": 0.9349706949483673,
+      "precision": 0.6276150627615062,
+      "recall": 0.5102040816326531,
+      "f1": 0.5628517823639775,
+      "mcc": 0.5314351475113335,
+      "roc_auc": 0.928424060411638,
+      "pr_auc": 0.6392665248144248,
+      "brier_score": 0.04794868015809636,
+      "confusion_matrix": [
+        [
+          3200,
+          89
+        ],
+        [
+          144,
+          150
+        ]
+      ]
+    }
+  },
+  "strict-history_legacy-split": {
+    "model": "random_forest_depth_10",
+    "source_stages": {
+      "fit": {
+        "rows": 13869,
+        "failures": 1139
+      },
+      "selection": {
+        "rows": 1174,
+        "failures": 55
+      },
+      "calibration": {
+        "rows": 1174,
+        "failures": 89
+      },
+      "threshold": {
+        "rows": 1174,
+        "failures": 118
+      }
+    },
+    "metrics": {
+      "rows": 3583,
+      "failure_rate": 0.08205414457158805,
+      "threshold": 0.3449999999999999,
+      "accuracy": 0.9274351102428133,
+      "precision": 0.562962962962963,
+      "recall": 0.5170068027210885,
+      "f1": 0.5390070921985816,
+      "mcc": 0.5002361936948724,
+      "roc_auc": 0.9215804899034712,
+      "pr_auc": 0.6032339461815538,
+      "brier_score": 0.05088627132225631,
+      "confusion_matrix": [
+        [
+          3171,
+          118
+        ],
+        [
+          142,
+          152
+        ]
+      ]
+    },
+    "common_test_metrics": {
+      "rows": 3583,
+      "failure_rate": 0.08205414457158805,
+      "threshold": 0.3449999999999999,
+      "accuracy": 0.9274351102428133,
+      "precision": 0.562962962962963,
+      "recall": 0.5170068027210885,
+      "f1": 0.5390070921985816,
+      "mcc": 0.5002361936948724,
+      "roc_auc": 0.9215804899034712,
+      "pr_auc": 0.6032339461815538,
+      "brier_score": 0.05088627132225631,
+      "confusion_matrix": [
+        [
+          3171,
+          118
+        ],
+        [
+          142,
+          152
+        ]
+      ]
+    }
+  },
+  "legacy-history_strict-split": {
+    "model": "random_forest_depth_10",
+    "source_stages": {
+      "fit": {
+        "rows": 13522,
+        "failures": 1130
+      },
+      "selection": {
+        "rows": 1134,
+        "failures": 53
+      },
+      "calibration": {
+        "rows": 1131,
+        "failures": 82
+      },
+      "threshold": {
+        "rows": 1112,
+        "failures": 115
+      }
+    },
+    "metrics": {
+      "rows": 3583,
+      "failure_rate": 0.08205414457158805,
+      "threshold": 0.43499999999999994,
+      "accuracy": 0.9374825565168853,
+      "precision": 0.6682692307692307,
+      "recall": 0.47278911564625853,
+      "f1": 0.5537848605577689,
+      "mcc": 0.5302650162671256,
+      "roc_auc": 0.9287689536136742,
+      "pr_auc": 0.6289529533598412,
+      "brier_score": 0.047909637625174,
+      "confusion_matrix": [
+        [
+          3220,
+          69
+        ],
+        [
+          155,
+          139
+        ]
+      ]
+    },
+    "common_test_metrics": {
+      "rows": 3583,
+      "failure_rate": 0.08205414457158805,
+      "threshold": 0.43499999999999994,
+      "accuracy": 0.9374825565168853,
+      "precision": 0.6682692307692307,
+      "recall": 0.47278911564625853,
+      "f1": 0.5537848605577689,
+      "mcc": 0.5302650162671256,
+      "roc_auc": 0.9287689536136742,
+      "pr_auc": 0.6289529533598412,
+      "brier_score": 0.047909637625174,
+      "confusion_matrix": [
+        [
+          3220,
+          69
+        ],
+        [
+          155,
+          139
+        ]
+      ]
+    }
+  },
+  "strict-history_strict-split": {
+    "model": "random_forest_depth_10",
+    "source_stages": {
+      "fit": {
+        "rows": 13522,
+        "failures": 1130
+      },
+      "selection": {
+        "rows": 1134,
+        "failures": 53
+      },
+      "calibration": {
+        "rows": 1131,
+        "failures": 82
+      },
+      "threshold": {
+        "rows": 1112,
+        "failures": 115
+      }
+    },
+    "metrics": {
+      "rows": 3583,
+      "failure_rate": 0.08205414457158805,
+      "threshold": 0.33999999999999997,
+      "accuracy": 0.9299469718113312,
+      "precision": 0.5799256505576208,
+      "recall": 0.5306122448979592,
+      "f1": 0.5541740674955595,
+      "mcc": 0.5168426752318026,
+      "roc_auc": 0.9229869509372615,
+      "pr_auc": 0.6155939824610033,
+      "brier_score": 0.05012705904975037,
+      "confusion_matrix": [
+        [
+          3176,
+          113
+        ],
+        [
+          138,
+          156
+        ]
+      ]
+    },
+    "common_test_metrics": {
+      "rows": 3583,
+      "failure_rate": 0.08205414457158805,
+      "threshold": 0.33999999999999997,
+      "accuracy": 0.9299469718113312,
+      "precision": 0.5799256505576208,
+      "recall": 0.5306122448979592,
+      "f1": 0.5541740674955595,
+      "mcc": 0.5168426752318026,
+      "roc_auc": 0.9229869509372615,
+      "pr_auc": 0.6155939824610033,
+      "brier_score": 0.05012705904975037,
+      "confusion_matrix": [
+        [
+          3176,
+          113
+        ],
+        [
+          138,
+          156
+        ]
+      ]
+    }
+  },
+  "protocol": {
+    "original_commit": "6cd82763bafc1657501c2df8df39996b273e7e63",
+    "rows": 20974,
+    "strict_boundaries": [
+      "2026-05-02 08:21:48+00:00",
+      "2026-05-21 14:44:50+00:00",
+      "2026-06-03 09:18:26+00:00",
+      "2026-06-24 07:48:15+00:00"
+    ],
+    "common_test_rows": 3583,
+    "purpose": "retrospective repair sensitivity, not independent confirmation",
+    "availability": "recorded updated_at unchanged",
+    "model_settings": "same original six fixed candidates and seeds; n_jobs=2 only",
+    "legacy_published_metrics": {
+      "rows": 3583,
+      "failure_rate": 0.08205414457158805,
+      "threshold": 0.4149999999999999,
+      "accuracy": 0.9366452693273792,
+      "precision": 0.6437768240343348,
+      "recall": 0.5102040816326531,
+      "f1": 0.5692599620493358,
+      "mcc": 0.5397824025493319,
+      "roc_auc": 0.928843413315463,
+      "pr_auc": 0.6419503966999487,
+      "brier_score": 0.047397747126923684,
+      "confusion_matrix": [
+        [
+          3206,
+          83
+        ],
+        [
+          144,
+          150
+        ]
+      ],
+      "confidence_intervals_95": {
+        "roc_auc": [
+          0.9145037198473689,
+          0.9426990247292271
+        ],
+        "pr_auc": [
+          0.5842401032123414,
+          0.6987592247276857
+        ],
+        "brier_score": [
+          0.04299679511579189,
+          0.05237653565692696
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "checked_document_sha256": "61052a6d5d846d00c1156c0ae5abe13d83fc72816de1b9506c1963965d6c95ae",
+  "checks": [
+    "All 42 project/model/regime rows, AP/Brier and confusion counts recomputed; all nine Table E.3 rows match unrounded metrics",
+    "Rerun pairs/distinct-run counts and failed-attempt 39/5/3/40 strata recomputed",
+    "All Table 4.2 cells match independent four-way saved rerun results to displayed precision",
+    "All primary and later-four per-project table rows and all eight ablation configurations match saved results"
+  ],
+  "status": "numeric checks pass; structural issues recorded separately",
+  "macro": [
+    {
+      "regime": "later4-zero",
+      "model": "B0",
+      "AP": 0.28135481967158377,
+      "Brier": 0.16362409281196968,
+      "warning_rate": 0.046,
+      "false_alarms_per_100_runs": 3.35
+    },
+    {
+      "regime": "later4-zero",
+      "model": "C1",
+      "AP": 0.2758285545901886,
+      "Brier": 0.16835241673680656,
+      "warning_rate": 0.20703225806451614,
+      "false_alarms_per_100_runs": 15.00241935483871
+    },
+    {
+      "regime": "later4-zero",
+      "model": "extended",
+      "AP": 0.2849274115656886,
+      "Brier": 0.16416108052167672,
+      "warning_rate": 0.34496370967741935,
+      "false_alarms_per_100_runs": 25.738709677419358
+    },
+    {
+      "regime": "original5-online",
+      "model": "B0",
+      "AP": 0.35450410594434495,
+      "Brier": 0.14795783668617346,
+      "warning_rate": 0.13679999999999998,
+      "false_alarms_per_100_runs": 8.2
+    },
+    {
+      "regime": "original5-online",
+      "model": "C1",
+      "AP": 0.3524719091556851,
+      "Brier": 0.14744602964578937,
+      "warning_rate": 0.1464,
+      "false_alarms_per_100_runs": 9.4
+    },
+    {
+      "regime": "original5-online",
+      "model": "extended",
+      "AP": 0.3111593459698289,
+      "Brier": 0.15544800503021083,
+      "warning_rate": 0.2116,
+      "false_alarms_per_100_runs": 15.040000000000001
+    },
+    {
+      "regime": "original5-zero",
+      "model": "B0",
+      "AP": 0.2862586071508651,
+      "Brier": 0.16021906861351262,
+      "warning_rate": 0.055200000000000006,
+      "false_alarms_per_100_runs": 4.4799999999999995
+    },
+    {
+      "regime": "original5-zero",
+      "model": "C1",
+      "AP": 0.2793876889409216,
+      "Brier": 0.16524986767383334,
+      "warning_rate": 0.1768,
+      "false_alarms_per_100_runs": 13.479999999999999
+    },
+    {
+      "regime": "original5-zero",
+      "model": "extended",
+      "AP": 0.28834157936264915,
+      "Brier": 0.15899481752043884,
+      "warning_rate": 0.40759999999999996,
+      "false_alarms_per_100_runs": 30.96
+    }
+  ]
+}

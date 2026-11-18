@@ -1,0 +1,10 @@
+{
+  "bounds": {
+    "fit": "2026-04-21 06:56:50+00:00",
+    "selection": "2026-05-18 21:43:02+00:00",
+    "calibration": "2026-06-07 04:10:37+00:00",
+    "threshold": "2026-07-01 00:00:00+00:00"
+  },
+  "source_only_selection": true,
+  "target_scores_exposed": true
+}

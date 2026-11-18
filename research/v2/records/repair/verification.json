@@ -1,0 +1,44 @@
+{
+  "tests_passed": [
+    "equal-time outcome exclusion",
+    "current-outcome invariance in all history fields",
+    "missing timestamp rejected",
+    "before-start availability rejected",
+    "all final source stage row and label deadlines",
+    "whole-commit no stage crossing"
+  ],
+  "original_rows_with_changed_history_by_field": {
+    "workflow_prior_runs": 16832,
+    "previous_workflow_result": 498,
+    "workflow_prior_failure_rate": 13794,
+    "workflow_failure_rate_3": 602,
+    "workflow_failure_rate_5": 658,
+    "workflow_failure_rate_10": 713,
+    "workflow_failure_rate_20": 780,
+    "hours_since_previous_workflow_run": 3728,
+    "hours_since_previous_failure": 636,
+    "repository_prior_runs": 20971,
+    "repository_prior_failure_rate": 20925,
+    "branch_prior_failure_rate": 16928
+  },
+  "legacy_stage_timing_violations": {
+    "fit": {
+      "rows_starting_at_or_after_next_stage": 35,
+      "labels_not_available_before_next_stage": 209
+    },
+    "selection": {
+      "rows_starting_at_or_after_next_stage": 0,
+      "labels_not_available_before_next_stage": 2
+    },
+    "calibration": {
+      "rows_starting_at_or_after_next_stage": 0,
+      "labels_not_available_before_next_stage": 2
+    },
+    "threshold": {
+      "rows_starting_at_or_after_next_stage": 11,
+      "labels_not_available_before_next_stage": 11
+    }
+  },
+  "strict_purged_rows": 492,
+  "latest_frozen_input_validation_impact": "zero, all timestamps valid; branch reproduction unchanged"
+}

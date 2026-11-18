@@ -1,0 +1,10 @@
+{
+  "checks": [
+    "Desktop default metrics and all 15 project/model rows verified",
+    "Later-four switch: rows, AP delta and 12 project/model rows correct",
+    "Online switch: negative AP delta and interval correct",
+    "Right-panel selector v2 -> v1 -> v2 navigation passes",
+    "390px mobile viewport has no whole-page horizontal overflow"
+  ],
+  "javascript_errors": []
+}

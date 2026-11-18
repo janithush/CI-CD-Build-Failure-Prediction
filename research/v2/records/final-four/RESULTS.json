@@ -1,0 +1,154 @@
+{
+  "status": "locked new-cohort confirmation scored once",
+  "projects": {
+    "celery/celery": {
+      "rows": 496,
+      "failures": 65,
+      "prevalence": 0.1310483870967742,
+      "metrics": {
+        "B0": {
+          "AP": 0.17575761310291954,
+          "AP_minus_prevalence": 0.04470922600614535,
+          "ROC_AUC": 0.5423701588434767,
+          "Brier": 0.12388370405153724
+        },
+        "C1": {
+          "AP": 0.17571515196995474,
+          "AP_minus_prevalence": 0.04466676487318055,
+          "ROC_AUC": 0.522345172229163,
+          "Brier": 0.12921381171191473
+        },
+        "constant": {
+          "AP": 0.1310483870967742,
+          "AP_minus_prevalence": 0.0,
+          "ROC_AUC": 0.5,
+          "Brier": 0.11624143777913223
+        }
+      },
+      "AP_delta": -4.2461132964799475e-05,
+      "paired_commit_95": [
+        -0.0473149409990197,
+        0.04947973835590289
+      ],
+      "bootstrap_valid": 1000
+    },
+    "pypa/pip": {
+      "rows": 500,
+      "failures": 99,
+      "prevalence": 0.198,
+      "metrics": {
+        "B0": {
+          "AP": 0.19930149700972977,
+          "AP_minus_prevalence": 0.0013014970097297573,
+          "ROC_AUC": 0.5153152472354467,
+          "Brier": 0.16704267972091041
+        },
+        "C1": {
+          "AP": 0.19778537942318813,
+          "AP_minus_prevalence": -0.00021462057681187474,
+          "ROC_AUC": 0.516234665860601,
+          "Brier": 0.1757613504469748
+        },
+        "constant": {
+          "AP": 0.198,
+          "AP_minus_prevalence": 0.0,
+          "ROC_AUC": 0.5,
+          "Brier": 0.1591309836669473
+        }
+      },
+      "AP_delta": -0.001516117586541632,
+      "paired_commit_95": [
+        -0.024135677791830772,
+        0.014197987596490595
+      ],
+      "bootstrap_valid": 1000
+    },
+    "python-poetry/poetry": {
+      "rows": 500,
+      "failures": 78,
+      "prevalence": 0.156,
+      "metrics": {
+        "B0": {
+          "AP": 0.2693094149566935,
+          "AP_minus_prevalence": 0.11330941495669353,
+          "ROC_AUC": 0.6919583181431522,
+          "Brier": 0.1405426455871119
+        },
+        "C1": {
+          "AP": 0.2699107060868411,
+          "AP_minus_prevalence": 0.11391070608684109,
+          "ROC_AUC": 0.700039494470774,
+          "Brier": 0.1488214859794108
+        },
+        "constant": {
+          "AP": 0.156,
+          "AP_minus_prevalence": 0.0,
+          "ROC_AUC": 0.5,
+          "Brier": 0.13222556870865523
+        }
+      },
+      "AP_delta": 0.0006012911301475632,
+      "paired_commit_95": [
+        -0.04046865025666814,
+        0.046529127983194106
+      ],
+      "bootstrap_valid": 1000
+    },
+    "scrapy/scrapy": {
+      "rows": 500,
+      "failures": 161,
+      "prevalence": 0.322,
+      "metrics": {
+        "B0": {
+          "AP": 0.4810507536169923,
+          "AP_minus_prevalence": 0.15905075361699228,
+          "ROC_AUC": 0.6316257168508035,
+          "Brier": 0.22302734188831919
+        },
+        "C1": {
+          "AP": 0.4599029808807706,
+          "AP_minus_prevalence": 0.13790298088077058,
+          "ROC_AUC": 0.6250755785192106,
+          "Brier": 0.2196130188089259
+        },
+        "constant": {
+          "AP": 0.322,
+          "AP_minus_prevalence": 0.0,
+          "ROC_AUC": 0.5,
+          "Brier": 0.23856601830571447
+        }
+      },
+      "AP_delta": -0.021147772736221704,
+      "paired_commit_95": [
+        -0.06001972822751453,
+        0.015893551169632335
+      ],
+      "bootstrap_valid": 1000
+    }
+  },
+  "macro_AP": {
+    "B0": 0.28135481967158377,
+    "C1": 0.2758285545901886,
+    "constant": 0.20176209677419354
+  },
+  "macro_AP_delta": -0.005526265081395143,
+  "exploratory_project_commit95": [
+    -0.0272225652854494,
+    0.016998194673264085
+  ],
+  "leave_one_project_out_delta": {
+    "celery/celery": -0.007354199730871924,
+    "pypa/pip": -0.00686298091301298,
+    "python-poetry/poetry": -0.007568783818576045,
+    "scrapy/scrapy": -0.0003190958631196228
+  },
+  "reporting_margin": 0.02,
+  "limits": [
+    "Availability-screened roster amended before scoring; original roster failures retained.",
+    "Four purposive Python projects, not random or language-independent generalisation.",
+    "API head-change features, not complete runtime-source attestation.",
+    "Latest API-visible attempt per run; not all historical attempts.",
+    "No source calibration, thresholds, models or features changed.",
+    "Original five-project negative result remains separate."
+  ]
+}

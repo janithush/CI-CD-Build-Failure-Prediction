@@ -1,0 +1,12 @@
+PASS: 42 project/model/regime rows; AP, Brier, confusion counts and macro means match.
+                                 AP     Brier  warning_rate  false_alarms_per_100_runs
+regime           model                                                                
+later4-zero      B0        0.281355  0.163624      0.046000                   3.350000
+                 C1        0.275829  0.168352      0.207032                  15.002419
+                 extended  0.284927  0.164161      0.344964                  25.738710
+original5-online B0        0.354504  0.147958      0.136800                   8.200000
+                 C1        0.352472  0.147446      0.146400                   9.400000
+                 extended  0.311159  0.155448      0.211600                  15.040000
+original5-zero   B0        0.286259  0.160219      0.055200                   4.480000
+                 C1        0.279388  0.165250      0.176800                  13.480000
+                 extended  0.288342  0.158995      0.407600                  30.960000

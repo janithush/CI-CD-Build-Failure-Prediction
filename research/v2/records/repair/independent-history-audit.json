@@ -1,0 +1,20 @@
+{
+  "rows": 82115,
+  "independent_history_field_mismatches": {
+    "workflow_prior_runs": 0,
+    "previous_workflow_result": 0,
+    "workflow_prior_failure_rate": 0,
+    "workflow_failure_rate_3": 0,
+    "workflow_failure_rate_5": 0,
+    "workflow_failure_rate_10": 0,
+    "workflow_failure_rate_20": 0,
+    "hours_since_previous_workflow_run": 0,
+    "hours_since_previous_failure": 0,
+    "repository_prior_runs": 0,
+    "repository_prior_failure_rate": 0,
+    "branch_prior_failure_rate": 0
+  },
+  "rows_with_unavailable_earlier_started_workflow_outcomes": 73369,
+  "availability_proxy": "recorded updated_at, not certified exact completion",
+  "missing_or_before_start_availability": 0
+}

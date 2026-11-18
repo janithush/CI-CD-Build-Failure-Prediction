@@ -1,0 +1,19 @@
+# Non-code signal extension protocol
+
+18 November 2026, 11:07 Asia/Colombo. Prior archive gate PASS before work: 123 downloaded files, 34 archives, matched available manifests. Gate record is saved in Drive.
+
+## Scope and fixed analysis
+
+1. Recover prior attempts for every observed run with run_attempt > 1 in the existing five-project development data, original five-project evaluation and later four-project confirmation. Preserve API responses and missingness. Compare same run ID, workflow and head SHA across attempts. Outcome discordance is suggestive evidence, not a causal non-code or flaky label. Same-head separate-run transitions are reported separately. No actual rerun or workflow is triggered.
+2. Classify existing retained logs for the previously frozen 500-attempt evidence cohort only. Use failed-step time intervals from provider metadata, bounded raw logs and fixed signatures for assertion/test output, compile/build errors, network/resolution/transport, timeouts, dependency/environment, other and unknown. Categories can overlap. A signature does not establish root cause; a test or compile failure is not necessarily caused by the commit, and a network failure can be caused by code. Keep missing, oversized and conflicting evidence unknown. No unrestricted log expansion.
+3. Add prediction-time run clock and commit-definition OS/matrix structure features, plus strictly released historical workflow/consecutive-failure/observed discordance signals. B0 already contains workflow failure rates and commit clock; do not sell these as absent. No current job outcome, duration, current log, later rerun outcome or current test-failure identity enters predictions. Test-level history is not available consistently, and is not imputed from post-outcome logs. Static YAML is a commit-head definition proxy, not attested executed configuration. Dynamic matrix sizes are unknown. Added declaration counts are not actual executed job counts.
+
+Use fixed B0 and C1 source training pipeline, six original learned settings, whole-commit maturity-aware fit/selection/calibration/threshold stages before July 1, 2026. Fit one extended C1 no-history branch with static additions and one history branch with static plus released-history additions. Do not select features or thresholds on any external score. Keep all fits. Primary reporting pairs the existing predictions and new predictions on exactly the same eligible rows. Report original five and later four separately. The latter are now viewed evaluation, not a fresh untouched confirmation for this extension. Original scores and models are retained unchanged.
+
+4. Report broad workflow failure as the primary endpoint, with evidence-supported assertion/test, build/compile, environment/network/timeout, mixed and unknown audit strata separately on the 500-case retained-log cohort. Conditional AP against successes is a selected retrospective diagnostic, not a validated code-caused endpoint. Do not silently relabel unknown as non-code, train a code-cause model without source cause labels, or claim causal discrimination. Include class counts and probability/warning diagnostics. No-gain findings stay visible.
+
+## Checks
+
+Lock protocol and scripts before new-model target scores. Verify chronological-prefix invariance, future/current-outcome flip invariance for features, release-time exclusions and same-row baselines. Source recorded updated_at remains an availability proxy and is disclosed. Existing target online releases use complete-job terminal evidence. No new target is represented as untouched. Model selection remains source-only. All inputs, response URLs/statuses, manifests, code, models, predictions, failures and reports saved, then stored downloads rechecked.
+
+No repository pushes, workflows triggered, deployment, spending or third-party messaging. Stop on API throttle/authentication errors and preserve progress.

@@ -1,0 +1,9 @@
+PASS saved model replay: original5-zero B0 maximum absolute difference 6.106226635438361e-16
+PASS saved model replay: original5-zero C1 maximum absolute difference 4.440892098500626e-16
+PASS saved model replay: original5-zero extended maximum absolute difference 2.7755575615628914e-16
+PASS saved model replay: later4-zero B0 maximum absolute difference 5.551115123125783e-16
+PASS saved model replay: later4-zero C1 maximum absolute difference 5.551115123125783e-16
+PASS saved model replay: later4-zero extended maximum absolute difference 2.7755575615628914e-16
+PASS saved model replay: original5-online B0 maximum absolute difference 4.440892098500626e-16
+PASS saved model replay: original5-online C1 maximum absolute difference 2.7755575615628914e-16
+PASS saved model replay: original5-online extended maximum absolute difference 9.71445146547012e-17

@@ -1,0 +1,9 @@
+{
+  "checks": [
+    "original5-zero: AP/Brier independently recomputed, confusion totals checked",
+    "original5-online: AP/Brier independently recomputed, confusion totals checked",
+    "later4-zero: AP/Brier independently recomputed, confusion totals checked",
+    "All 496 retained raw ZIPs match original frozen hashes, including 134 repaired omissions; four 404s remain absent"
+  ],
+  "primary_model_predictions_changed_after_scoring": false
+}

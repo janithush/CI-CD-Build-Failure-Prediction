@@ -1,0 +1,35 @@
+# Final four-task protocol
+
+Frozen before accessing any new-cohort repository data or scores. 18 November 2026, Asia/Colombo.
+
+## Scope and success
+
+Only four tasks: (1) new untouched confirmation cohort, (2) source-only C1 feature ablations, (3) bounded blinded label/source audit, (4) calibration and warning analysis. Saving inputs, scripts, results, a single running progress document and integrating the four findings are direct prerequisites/deliverables, not new research branches. Existing negative C1 findings remain unchanged. No deployment, repository push or automatic retraining.
+
+## 1. Confirmation cohort
+
+Lock existing B0-no-history and C1-no-history fitted branches from final-reproduction, their features, imputers, calibration and thresholds. Preserve hashes now. No refitting and no score-based eligibility, workflow choice, replacement or extension. Primary comparison is zero-label transfer. Online onboarding on new projects is outside this bounded addition; already-reported online analysis remains.
+
+Fixed prospective roster, in order: scrapy/scrapy; celery/celery; ansible/ansible; Textualize/textual; psf/requests. These add crawling, task processing, automation, terminal UI and HTTP domains within Python. They are not a random sample or evidence of language-independent transfer. Verify against earlier project records before accessing the roster; any prior evaluated project is ineligible and will be reported rather than silently replaced.
+
+Window: [2026-08-18T00:00:00Z, 2026-11-16T00:00:00Z). Select up to the latest 500 completed push/pull_request workflow-run attempts with success/failure, build/test-related workflow name/path (case-insensitive test, ci, build, check, unit, integration, quality, tox, pytest, python) excluding purely administrative/release/lint-only/security/docs-only workflow names where discernible. Capture metadata before prediction. No minimum failure count for eligibility. Explicitly log workflow inclusions/exclusions and all candidate row keys. If fewer than 200 eligible attempts or unusable commit metadata remain, that project is reported as insufficient; no substitution. A cohort with only one outcome class is retained but its AP/ROC inference is marked not informative. Complete as a 3-5 evaluable-project study only if at least three remain; otherwise report the blocker and actual coverage.
+
+Preserve API-recorded head commit metadata. Use the exact existing feature builder and cold-history reset. Changes must have commit time no later than prediction start. Preserve file-pagination completeness and feature exclusions; no hidden truncation. Earlier-change context starts empty and uses strictly earlier unique observed commits within the cohort, no target labels or future-wide estimates. Both branches predict the same rows. Broad workflow failure is the endpoint; it is not a pure source defect label. Runtime identity is not fully attested by head SHA.
+
+Primary: per-project AP(C1)-AP(B0), equal-project mean, prevalence, AP-minus-prevalence, ROC AUC and Brier error; source-fit constant prevalence control. Paired commit-cluster 1,000 bootstrap draws seed 42. Equal-project leave-one-project-out and exploratory project/commit intervals with the small purposive sample caveat. Keep reporting margin +0.02 AP as the earlier benchmark convention, not business benefit. Preserve the complete original external negative result separately. Do not combine cohorts to conceal a negative result.
+
+## 2. C1 ablations
+
+Source development data only, no external scores for model or feature selection. Fixed three groups: four log-size transforms; four strictly-earlier-mean ratios; five file-type proportions. Compare B0, B0+each single group, full C1, and full C1 minus each group (eight configurations including B0/full). No additional groups or search. Primary diagnostic setting is no-history, matching zero-label transfer. Original fixed six learned model settings, source-only selection/calibration/threshold pipeline, seed 42 and strict whole-commit/label-mature stages. Use leave-one-development-project-out temporal validation: source from the other four projects before April 1 2026, validation on the held project April 1-July 1 2026 with labels mature before July 1. Recompute strict source stages at April 1. Outcomes are not external confirmation. Report all feasible configurations/folds and failure reasons; no winner promoted into the locked confirmation comparison.
+
+## 3. Blinded label/source audit
+
+Bounded sample from the existing fixed 500-attempt log cohort. Deterministic seed 42 stratification over project and broad workflow success/failure, with 10 attempts/project (5 failures, 5 successes where available), plus up to 10 ambiguity/missing-evidence cases recorded as a separate purposive supplement. Core n=50, supplement <=10. Selection is independent of model scores and does not rebalance the primary endpoint. Supply raw run/job evidence and retained log/checkout evidence, but withhold prior inferred taxonomy, model scores, project-level conclusions and aggregate study results. A separate reviewer returns evidence-supported broad outcome, test/assertion support, probable failure stage, checkout-to-head relationship, uncertainty and exact evidence pointers. Unknown is allowed and mandatory when unsupported. Record agreement/disagreement and do not silently revise labels to improve scores. Reviewer type and lack of human independence must be explicit if AI is used. A second human is not implied by a fresh AI review.
+
+## 4. Calibration and warnings
+
+Use saved original five-project external predictions and the locked new cohort once ready; no external recalibration. Report Brier, log loss with clipping at 1e-15, equal-width 10-bin reliability tables/plots and sample counts. ECE is descriptive and bin-sensitive. Compare source-fit constant prevalence, B0 and C1. At each model's already-fixed source threshold report TP/FP/TN/FN, warning count/rate, precision, recall, F1, false-positive rate and false alarms per 100 runs per project. No threshold optimization on target outcomes. Source threshold transfer is examined, not presumed useful. Original external zero-label is the main diagnostic; online results may be shown separately using stored branch routing and fixed branch-specific thresholds, with no mixing. No claims of saved time, safe skipping or user utility from offline metrics.
+
+## Operational safeguards
+
+Use authorized GitHub research credential without displaying it. Stop on rate-limit/auth challenges, preserve cursor and arrange a bounded later continuation. Each API page/commit is checkpointed. Record software errors and fixes separately from scientific changes. Save model/protocol hashes before first new target read; save row membership and feature invariance checks before first target score. Update one running Drive progress document at each milestone with four fixed states, what changed, artifact links, blockers and next step. Preserve all findings and evidence in Drive, private to the existing account.

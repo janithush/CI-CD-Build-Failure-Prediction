@@ -1,0 +1,97 @@
+{
+  "macro": [
+    {
+      "regime": "later4-zero",
+      "model": "B0",
+      "AP": 0.28135481967158377,
+      "Brier": 0.16362409281196968,
+      "warning_rate": 0.046,
+      "false_alarms_per_100_runs": 3.35
+    },
+    {
+      "regime": "later4-zero",
+      "model": "C1",
+      "AP": 0.2758285545901886,
+      "Brier": 0.16835241673680656,
+      "warning_rate": 0.20703225806451614,
+      "false_alarms_per_100_runs": 15.00241935483871
+    },
+    {
+      "regime": "later4-zero",
+      "model": "extended",
+      "AP": 0.2849274115656886,
+      "Brier": 0.16416108052167672,
+      "warning_rate": 0.34496370967741935,
+      "false_alarms_per_100_runs": 25.738709677419358
+    },
+    {
+      "regime": "original5-online",
+      "model": "B0",
+      "AP": 0.35450410594434495,
+      "Brier": 0.14795783668617346,
+      "warning_rate": 0.13679999999999998,
+      "false_alarms_per_100_runs": 8.2
+    },
+    {
+      "regime": "original5-online",
+      "model": "C1",
+      "AP": 0.3524719091556851,
+      "Brier": 0.14744602964578937,
+      "warning_rate": 0.1464,
+      "false_alarms_per_100_runs": 9.4
+    },
+    {
+      "regime": "original5-online",
+      "model": "extended",
+      "AP": 0.3111593459698289,
+      "Brier": 0.15544800503021083,
+      "warning_rate": 0.2116,
+      "false_alarms_per_100_runs": 15.040000000000001
+    },
+    {
+      "regime": "original5-zero",
+      "model": "B0",
+      "AP": 0.2862586071508651,
+      "Brier": 0.16021906861351262,
+      "warning_rate": 0.055200000000000006,
+      "false_alarms_per_100_runs": 4.4799999999999995
+    },
+    {
+      "regime": "original5-zero",
+      "model": "C1",
+      "AP": 0.2793876889409216,
+      "Brier": 0.16524986767383334,
+      "warning_rate": 0.1768,
+      "false_alarms_per_100_runs": 13.479999999999999
+    },
+    {
+      "regime": "original5-zero",
+      "model": "extended",
+      "AP": 0.28834157936264915,
+      "Brier": 0.15899481752043884,
+      "warning_rate": 0.40759999999999996,
+      "false_alarms_per_100_runs": 30.96
+    }
+  ],
+  "exploratory_paired_commit_project_interval_extended_minus_C1": {
+    "later4-zero": [
+      -0.02546738949305738,
+      0.041423237549087666
+    ],
+    "original5-online": [
+      -0.06577892485508462,
+      -0.010210223810615307
+    ],
+    "original5-zero": [
+      -0.0084506122820856,
+      0.025022593519442835
+    ]
+  },
+  "limits": [
+    "All external projects already viewed; descriptive extension, not untouched confirmation.",
+    "Broad provider workflow failure remains primary.",
+    "Cause categories are signatures, not causal labels.",
+    "Source updated_at proxy, partial runtime identity and missing logs remain."
+  ],
+  "baseline_predictions_independently_reproduced": true
+}

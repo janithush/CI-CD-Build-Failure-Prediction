@@ -1,0 +1,44 @@
+{
+  "outcome_flip_invariance": "passed",
+  "zero_outcome_history": "passed",
+  "chronological_prefix_invariance": "passed",
+  "coverage": [
+    {
+      "repository": "Textualize/textual",
+      "rows": 16,
+      "failures": 3,
+      "qualifies": false
+    },
+    {
+      "repository": "celery/celery",
+      "rows": 496,
+      "failures": 65,
+      "qualifies": true
+    },
+    {
+      "repository": "encode/httpx",
+      "rows": 4,
+      "failures": 4,
+      "qualifies": false
+    },
+    {
+      "repository": "pypa/pip",
+      "rows": 500,
+      "failures": 99,
+      "qualifies": true
+    },
+    {
+      "repository": "python-poetry/poetry",
+      "rows": 500,
+      "failures": 78,
+      "qualifies": true
+    },
+    {
+      "repository": "scrapy/scrapy",
+      "rows": 500,
+      "failures": 161,
+      "qualifies": true
+    }
+  ],
+  "scores_exposed": false
+}

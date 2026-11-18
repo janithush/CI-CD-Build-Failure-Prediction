@@ -1,0 +1,10 @@
+[
+  {
+    "branch": "extended-no-history",
+    "max_probability_difference": 3.3306690738754696e-16
+  },
+  {
+    "branch": "extended-history",
+    "max_probability_difference": 0.0
+  }
+]

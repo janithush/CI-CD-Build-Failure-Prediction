@@ -1,119 +1,66 @@
-# CI/CD Build Failure Prediction
-<img width="1920" height="3077" alt="Image" src="https://github.com/user-attachments/assets/134c2682-fc00-416e-aad8-23432b2c8975" />
+# CI/CD Build Failure Prediction: research version 2
 
-This project predicts the risk of a CI/CD build failure from GitHub repository and commit signals. It combines repository analysis, feature engineering, and a trained machine learning model exposed through a FastAPI service.
+Research extension by Janith Gunathunga. Original project by [mhdshukry (Shukri)](https://github.com/mhdshukry/CI-CD-Build-Failure-Prediction), based on upstream revision `6cd82763bafc1657501c2df8df39996b273e7e63`.
 
-## What It Does
+## Status and ownership
 
-- Analyzes a GitHub repository and its latest commit/build evidence.
-- Predicts build failure risk using commit-level features such as files changed, lines added, workflow changes, and test changes.
-- Stores prediction history in `history/prediction_history.csv`.
-- Saves optional post-build feedback in `data/processed/post_build_feedback.csv` for continuous learning.
+This is Janith Gunathunga's native public fork of Shukri's project. Version 1 is Shukri's original project; version 2 is Janith's research extension. Janith reports that Shukri gave him verbal permission to use and modify the project. This records Janith's account of that permission, not an open-source licence for inherited code or an ownership transfer.
 
-## Project Structure
+Upstream has no licence file in the inspected revision. Inherited code and upstream-derived helpers retain their original rights. The MIT grant in `LICENSE-MIT-JANITH.txt` applies only to the independently authored additions explicitly listed in `LICENSING.md`, not the whole repository, inherited code, datasets or fitted models.
 
-- `api/` - FastAPI application and prediction logic.
-- `ci_runner/` - CI-related helper scripts.
-- `dashboard/` - Static dashboard UI.
-- `data/raw/` - Raw source datasets.
-- `data/processed/` - Cleaned and merged datasets used for training.
-- `dataset_collector/` - Scripts for collecting GitHub data.
-- `github_analyzer/` - GitHub repository analysis utilities.
-- `local_analyzer/` - Local repository analysis utilities.
-- `models/` - Model training scripts and saved model artifacts.
-- `preprocessing/` - Dataset cleaning and dataset-building scripts.
-- `reports/` - Training results and generated figures.
+Native GitHub fork history includes a removed token-shaped literal in an old upstream commit. Janith reports that Shukri removed the token from GitHub's token settings, revoking it. Revocation has not been independently tested. The old value has never been used for this work. No new credential is included in the research additions. See `SECURITY.md`.
 
-## Requirements
+## Version 1 versus version 2
 
-Install the Python dependencies from `requirements.txt`:
+| | Version 1: upstream prototype | Version 2: research record |
+|---|---|---|
+| Author / attribution | Shukri and the original project contributors | Janith's research extension, retaining all upstream credit |
+| Interface | Original repository analysis and live score UI | Frozen matched evaluation and evidence dashboard |
+| Models | Original served model, fallback features and display overlay | Repaired original benchmark, B0/C1 branches, exploratory extended branches |
+| What the score means | Prototype served output, not validation of the repaired models | Historical model probabilities on frozen features, not a live production score |
+| Evaluation | Earlier stored reports remain historical | Strict recorded-availability history, commit-separated mature source stages, external comparisons, ablations, audit and warning diagnostics |
+| Finding | Do not reuse old headline metrics as new research proof | No demonstrated C1 transfer gain; uncertain cold extension changes, worse online AP and more false alarms |
+| Feedback | Existing live feedback mechanism retained | No automatic learning, deployment, build skipping or threshold tuning |
+
+Version numbering here names the two research views. It is not a claim that upstream's own API version numbers were 1 and 2. Version 1 is the inspected upstream snapshot, not an invented earlier commit. `README_V1.md` preserves its original README verbatim; its historical paths and claims have not been endorsed as the current research findings.
+
+## Open the dashboard
+
+For the results-only dashboard, no backend or account is needed:
+
+```bash
+python -m http.server 8080
+```
+
+Open `http://127.0.0.1:8080/dashboard/research-v2.html`. The **Research version** selector is in the right panel on both screens. Version 1 opens the original prototype. Version 2 opens the evaluated research record. The mobile layout puts the selector above the content.
+
+To use the original prototype's live functionality, install the original requirements and run its API separately:
 
 ```bash
 pip install -r requirements.txt
+uvicorn api.main:app --host 127.0.0.1 --port 8000
 ```
 
-## Run the API
+Keep the dashboard at port 8080. Its v1 API requests use localhost port 8000. This setup is for local research, not a hardened public deployment. Do not expose it on the internet without reviewing authentication, CORS, retention and tenant isolation. Tokens must come from environment variables or the explicit local input, never a committed file or browser persistence.
 
-Start the FastAPI server with Uvicorn:
+## Reproduce the new research
 
-```bash
-uvicorn api.main:app --reload
-```
+See [`research/v2/README.md`](research/v2/README.md). The bundle includes frozen features and predictions, source-stage manifests, fitted research models, portable verification/replay/refit commands, and the executed scientific scripts as archival records. It does not include raw CI logs, private dissertation files, private notes, credential material in this research bundle. The native fork separately retains upstream git history, including the security caveat above.
 
-After it starts, open:
+### Main results: equal-project average precision
 
-- `http://127.0.0.1:8000/` for the API status response
-- `http://127.0.0.1:8000/docs` for the interactive Swagger UI
+| Regime | B0 | C1 | Extended |
+|---|---:|---:|---:|
+| Original 5, cold history (2,500 rows) | 0.28626 | 0.27939 | 0.28834 |
+| Later 4, cold history (1,996 rows) | 0.28135 | 0.27583 | 0.28493 |
+| Original 5, online history (2,500 rows) | 0.35450 | 0.35247 | 0.31116 |
 
-## Main API Endpoints
+AP is not accuracy. The extended-minus-C1 cold intervals include zero. All nine external projects were already viewed before the extension, so it is exploratory. In the original-five cold cohort, false alarms rise from C1 13.48 to extended 30.96 per 100 runs at the fixed source thresholds. Better cold AP is not evidence of operational benefit.
 
-- `GET /` - Service status and workflow summary.
-- `POST /connect-github-repo` - Analyze a GitHub repository.
-- `POST /predict-connected-repo` - Predict build failure risk from collected commit data.
-- `GET /history?repository=owner/repo` - View recent prediction history.
-- `POST /post-build-feedback` - Save actual build feedback.
+Observed same-recorded-head reruns and environment-like log signatures do not establish causal non-code failures. The fixed failure audit has 39 test/compile-like, five environment-like, three mixed and 40 unknown failures. Consistent per-test history is unavailable. No result is manufactured to fill that gap.
 
-## Train or Refresh the Model
+## Attribution and retained evidence
 
-The active model used by `api/risk_analyzer.py` is saved at `models/saved/best_build_failure_model.pkl`.
+`UPSTREAM_PROVENANCE.json` records the exact upstream revision and snapshot hashes. Original rights remain with the respective authors. The complete private research archive remains the source for raw provider records and original execution layout. Frozen research pickles are included only for trusted local replay: never load an untrusted pickle/joblib file. Dependency versions are recorded for reproducibility, not a promise of indefinite compatibility.
 
-To retrain and regenerate the model artifact, run:
-
-```bash
-python models/train_improved_models.py
-```
-
-This script reads `data/processed/final_ml_dataset.csv`, trains candidate models, saves the best model, and generates `reports/model_results.csv` plus `reports/figures/feature_importance.png`.
-
-## Build the Final Dataset
-
-If you need to rebuild the processed training dataset, run the preprocessing scripts in this order:
-
-```bash
-python preprocessing/clean_build_history.py
-python preprocessing/create_final_dataset.py
-```
-
-## Optional Local Analysis
-
-You can analyze a local repository with the scripts in `local_analyzer/`, or inspect the latest commit using the helper test script:
-
-```bash
-python local_analyzer/test_local_repo.py
-```
-
-## Notes
-
-- The API writes prediction history to `history/prediction_history.csv`.
-- The feedback endpoint writes to `data/processed/post_build_feedback.csv`.
-- If the model file is missing, retrain it with `models/train_improved_models.py` before calling the prediction endpoint.
-
-## Research Dataset Pipeline
-
-The original CSV/model is a prototype baseline. The leakage-safe research pipeline uses one GitHub Actions workflow-run attempt per observation and stores normalized raw data in SQLite.
-
-1. Put a GitHub token in `.env` as `GITHUB_TOKEN=...`.
-2. Review `configs/repositories.txt` and `configs/research.json`.
-3. Collect runs, workflows, commits, changed files, jobs and failed steps:
-
-```bash
-python dataset_collector/github_actions_research_collector.py --include-jobs
-```
-
-For a small collection test:
-
-```bash
-python dataset_collector/github_actions_research_collector.py --repository pallets/flask
-```
-
-The collector automatically creates an ignored pseudonymization salt at `data/research/.hash_salt` when `BUILDRISK_HASH_SALT` is not supplied.
-
-Validate and prepare leakage-safe features/splits:
-
-```bash
-python preprocessing/validate_research_dataset.py
-python preprocessing/build_research_features.py
-python models/create_research_splits.py
-```
-
-The governing definitions and evaluation rules are documented in `docs/research_protocol.md`.
+No GitHub Actions workflow is enabled in the prepared snapshot. The inherited workflow is retained as a `.disabled` template so a push does not silently start external workflow activity. Enable it only after explicit review.
