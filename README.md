@@ -24,15 +24,25 @@ Native GitHub fork history includes a removed token-shaped literal in an old ups
 
 Version numbering here names the two research views. It is not a claim that upstream's own API version numbers were 1 and 2. Version 1 is the inspected upstream snapshot, not an invented earlier commit. `README_V1.md` preserves its original README verbatim; its historical paths and claims have not been endorsed as the current research findings.
 
+## Dashboard preview
+
+![Version 2 frozen-results dashboard with research-version selector](docs/dashboard-v2-preview.png)
+
+This is a real, included HTML dashboard. The image above is a preview, not an interactive page. GitHub displays HTML source rather than running it; download or clone the repository and use the short steps below. No online dashboard is deployed.
+
+GitHub Releases provide the two version snapshots: **Version 1 - Shukri's original prototype** and **Version 2 - Janith's research record**. The in-dashboard selector is separate from those release tags. Version 1 retains its original upstream rights; the limited MIT scope for v2 additions is explained in `LICENSING.md`.
+
 ## Open the dashboard
 
-For the results-only dashboard, no backend or account is needed:
+1. Download and extract this repository's ZIP from GitHub's Code menu, or clone it.
+2. Open a terminal in the extracted repository folder (the folder containing this README).
+3. Start the local server below. On Windows, use `py -m http.server 8080` if `python` is unavailable. Python must be installed. For the results-only dashboard, no backend or account is needed:
 
 ```bash
 python -m http.server 8080
 ```
 
-Open `http://127.0.0.1:8080/dashboard/research-v2.html`. The **Research version** selector is in the right panel on both screens. Version 1 opens the original prototype. Version 2 opens the evaluated research record. The mobile layout puts the selector above the content.
+4. Keep that terminal open and visit `http://127.0.0.1:8080/dashboard/research-v2.html` in your browser. Stop the server with Ctrl+C when finished. Do not double-click the HTML file: its results JSON needs the local HTTP server. The **Research version** selector is in the right panel on both screens. Version 1 opens the original prototype. Version 2 opens the evaluated research record. The mobile layout puts the selector above the content.
 
 To use the original prototype's live functionality, install the original requirements and run its API separately:
 
