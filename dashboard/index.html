@@ -814,7 +814,7 @@
         grid-template-columns: 1fr;
       }
     }
-  #combinedNav a{color:var(--cyan);display:inline-block;margin:8px} #strictLiveCard button{margin:12px 0} #strictLiveCard select,#researchPanel select{width:100%;min-height:44px} #researchPanel .table-wrap{overflow-x:auto} #researchPanel table{width:100%;border-collapse:collapse} #researchPanel th,#researchPanel td{padding:10px;text-align:left;border-bottom:1px solid #40504b} #researchPanel .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px} #researchPanel .kpi strong{display:block} #strictLiveCard pre{font-size:12px;line-height:1.5} button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #d2ff28;outline-offset:3px}@media(max-width:700px){#researchPanel .kpis{grid-template-columns:1fr}.history-table{display:block;overflow-x:auto}}
+  a{color:var(--cyan)} #combinedNav a{color:var(--cyan);display:inline-block;margin:8px} #strictLiveCard button{margin:12px 0} #strictLiveCard select,#researchPanel select{width:100%;min-height:44px} #researchPanel .table-wrap{overflow-x:auto} #researchPanel table{width:100%;border-collapse:collapse} #researchPanel th,#researchPanel td{padding:10px;text-align:left;border-bottom:1px solid #40504b} #researchPanel .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px} #researchPanel .kpi strong{display:block} #strictLiveCard pre{font-size:12px;line-height:1.5} button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #d2ff28;outline-offset:3px}@media(max-width:700px){#researchPanel .kpis{grid-template-columns:1fr}.history-table{display:block;overflow-x:auto}}
 </style>
 </head>
 
@@ -851,7 +851,7 @@
       <div class="hero">
 
         <h2>
-          Predict <span>GitHub Build Failure Risk</span> Before CI Runs
+          Explore <span>GitHub Build Failure Risk</span> Research
         </h2>
 
         <p>
@@ -919,7 +919,7 @@
             <div class="group wide">
               <label>GitHub Personal Access Token (Optional — System Token Active)</label>
               <div class="input-with-toggle">
-                <input id="github_token" type="password" placeholder="Optional (Leave blank to use system token)">
+                <input id="github_token" type="password" placeholder="Optional legacy connection token">
                 <button type="button" class="toggle-btn" onclick="toggleTokenVisibility()" id="toggleTokenBtn" title="Toggle visibility">👁️</button>
               </div>
             </div>
@@ -1124,7 +1124,7 @@
         <div class="card">
 
           <div class="card-head">
-            <h3>Prediction Output</h3>
+            <h3>Legacy advisory output</h3>
             <span class="badge">Model + advisory rules</span>
           </div>
 
@@ -1257,7 +1257,7 @@
         <div class="card" style="margin-top: 14px;">
 
           <div class="card-head">
-            <h3 id="historyPanel">Prediction History</h3>
+            <h3 id="historyPanel">Prediction History</h3><button type="button" onclick="loadHistory()">Reload history</button>
             <span class="badge">SQLite Log</span>
           </div>
 
@@ -1294,7 +1294,7 @@
 
     </section>
 
-    <section id="researchPanel"><div class="card"><h2>Frozen research evidence</h2><p>These study cohorts are not live performance for the connected repository.</p></div><div class="card"><span class="tag">No demonstrated reliable transfer gain</span><p class="summary">Small cold-history AP changes do not outweigh the uncertainty and warning burden. The richer online extension performs worse.</p><div class="note">AP is a ranking measure, not an accuracy percentage or the chance that an individual build will fail. The displayed warning rates use fixed source-selected thresholds, not validated operational cutoffs.</div></div>
+    <section id="researchPanel"><div class="card"><h2>Frozen research evidence</h2><p id="studyLoadState" role="status">Loading frozen evidence...</p><button id="studyRetry" type="button">Reload frozen evidence</button><p>On a phone, swipe wide tables sideways.</p><p>These study cohorts are not live performance for the connected repository.</p></div><div class="card"><span class="tag">No demonstrated reliable transfer gain</span><p class="summary">Small cold-history AP changes do not outweigh the uncertainty and warning burden. The richer online extension performs worse.</p><div class="note">AP is a ranking measure, not an accuracy percentage or the chance that an individual build will fail. The displayed warning rates use fixed source-selected thresholds, not validated operational cutoffs.</div></div>
 <div class="card"><h2>Matched before and after</h2><label for="studyRegime">Evaluation regime</label><select id="studyRegime"><option value="original5-zero">Original five projects - zero target-outcome history</option><option value="later4-zero">Later four projects - zero target-outcome history</option><option value="original5-online">Original five projects - online released history</option></select><p class="muted" id="studyNote"></p><div class="table-wrap"><table><thead><tr><th>Model</th><th class="num">Mean AP</th><th class="num">Brier</th><th class="num">Warnings</th><th class="num">False / 100</th></tr></thead><tbody id="studyMacro"></tbody></table></div><p class="muted">Equal-project means on identical rows. B0 is the base system; C1 adds change context; extended adds static declaration/clock descriptors and, in online mode, released history descriptors.</p><div class="kpis"><div class="kpi">Rows<strong id="studyRows">-</strong></div><div class="kpi">Extended minus C1 AP<strong id="studyDelta">-</strong></div><div class="kpi">Exploratory 95% interval<strong id="studyInterval" style="font-size:18px">-</strong></div></div></div>
 <div class="card"><h2>Project-level results</h2><div class="table-wrap"><table><thead><tr><th>Project</th><th class="num">Rows</th><th class="num">Failures</th><th>Model</th><th class="num">AP</th></tr></thead><tbody id="studyProjects"></tbody></table></div></div>
 <div class="card"><h2>What was actually checked</h2><ul><li>471 observed within-run attempt pairs, including 152 failure-to-success pairs across 131 distinct runs. No workflow was triggered by this study.</li><li>Among 87 failed attempts in the fixed 500-attempt audit: 39 test/compile-like, five environment-like, three mixed and 40 unknown.</li><li>Seventeen static descriptors and six released-evidence history descriptors. B0 already had workflow failure history and run-start clock inputs.</li><li>Replayed saved models and recomputed AP, Brier and confusion totals on all matched rows.</li><li>Four original unavailable log archives and one oversized log remain explicit limits. Missing evidence is never turned into a clean label.</li></ul><div class="note">Rerun discordance and log signatures are not causal code/non-code labels. There is no consistent per-test history ledger. All nine external projects were already viewed before the extension, so its results are exploratory.</div></div>
@@ -1311,6 +1311,13 @@
     let autoFetchTimer = null;
     const API_BASE = "http://127.0.0.1:8000";
 
+
+    async function legacyRequest(url, options={}) {
+      const response=await fetch(url,{...options,signal:AbortSignal.timeout(30000)});
+      let data; try { data=await response.clone().json(); } catch { throw Error("Local API returned unreadable data"); }
+      if (!response.ok) throw Error(typeof data.detail === "string" ? data.detail : "Local API request failed");
+      return response;
+    }
 
     function setConnectionStatus(type, text) {
       const status = document.getElementById("connectionStatus");
@@ -1744,7 +1751,7 @@
       };
 
       try {
-        const response = await fetch(`${API_BASE}/connect-github-repo`, {
+        const response = await legacyRequest(`${API_BASE}/connect-github-repo`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
@@ -1796,7 +1803,7 @@
       };
 
       try {
-        const response = await fetch(`${API_BASE}/connect-github-repo`, {
+        const response = await legacyRequest(`${API_BASE}/connect-github-repo`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
@@ -1853,7 +1860,7 @@
       predictBtn.innerText = "Predicting...";
 
       try {
-        const response = await fetch(`${API_BASE}/predict-connected-repo`, {
+        const response = await legacyRequest(`${API_BASE}/predict-connected-repo`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(connectedCommitData)
@@ -1914,7 +1921,7 @@
       };
 
       try {
-        const response = await fetch(`${API_BASE}/post-build-feedback`, {
+        const response = await legacyRequest(`${API_BASE}/post-build-feedback`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
@@ -1936,18 +1943,20 @@
 
 
     async function loadHistory() {
+      document.getElementById("historyBody").textContent = "Loading history...";
       try {
         const repo =
           connectedCommitData?.repository ||
           localStorage.getItem("buildrisk_repo") ||
           "";
 
-        const response = await fetch(
+        const response = await legacyRequest(
           `${API_BASE}/history?repository=${encodeURIComponent(repo)}`
         );
 
         const data = await response.json();
-        historyData = data.history.reverse();
+        if (!Array.isArray(data.history) || data.history.some(x => !x || typeof x !== "object")) throw Error("History has invalid data");
+        historyData = data.history.slice().reverse();
         historyPage = 1;
         renderHistoryPage();
 
@@ -1957,7 +1966,8 @@
         const tr = document.createElement("tr");
         const td = document.createElement("td");
         td.colSpan = 5;
-        td.textContent = "Unable to load history";
+        historyData = []; historyPage=1; document.getElementById("historyPageText").textContent="History unavailable";
+        td.textContent = "Unable to load history. Start the local API, then use Reload history.";
         tr.appendChild(td);
         historyBody.appendChild(tr);
       }
@@ -2061,6 +2071,7 @@
     checkApiHealth();
     setInterval(checkApiHealth, 15000);
   </script>
+  <script src="study-data.js"></script>
   <script src="combined.js"></script>
   </body>
   
