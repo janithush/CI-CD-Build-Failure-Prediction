@@ -16,3 +16,7 @@ Only these files are offered under `LICENSE-MIT-JANITH.txt`, copyright 2026 Jani
 - `research/v2/reproduce.py` (new portable verification/replay/refit entry point)
 
 The entry point imports separate helpers and uses data/models not covered by this grant. Licensing the entry point does not relicense its dependencies. Other third-party dependencies retain their own licences. Files not explicitly listed above are not covered by this MIT grant.
+
+## Combined application candidate
+
+The combined implementation does not expand the explicit MIT file list above. In particular, changes to inherited UI/API/analyzer files and feature-serving code derived from the archival research retain their existing rights and provenance. Newly added combined files are not automatically covered by the four-file grant. No new blanket licence or ownership transfer is made by this integration.
