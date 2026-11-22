@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
@@ -246,30 +247,27 @@ def generate_reasons(data: dict[str, Any], probability: float, threshold: float,
     prev_failed_step = safe_text(data, "previous_failed_step", "")
     rf = risky_files or []
 
-    # 1. Headline Risk Statement
-    if risk_level == "High Risk":
-        reasons.append(f"[HIGH RISK] Calibrated failure probability is {probability:.1f}% (exceeds {threshold:.1f}% critical threshold).")
-    elif risk_level == "Medium Risk":
-        reasons.append(f"[REVIEW RECOMMENDED] Failure probability is {probability:.1f}% (approaching {threshold:.1f}% cutoff).")
-    else:
-        reasons.append(f"[LOW RISK] Calibrated failure probability is {probability:.1f}%, within safe baseline margins.")
+    # Raw prediction and advisory category are intentionally distinct.
+    relation = "at or above" if probability >= threshold else "below"
+    reasons.append(f"[MODEL] Raw model probability is {probability:.1f}%, {relation} the {threshold:.1f}% model cutoff.")
+    reasons.append(f"[ADVICE] {risk_level} is an advisory classification using model output and heuristic signals, not a separate calibrated probability.")
 
     # 2. Prior Build Evidence
     if prev_status == "failure":
         if prev_failed_step:
-            reasons.append(f"[PRIOR FAILURE] Preceding CI build failed at step '{prev_failed_step}'. Consecutive builds inherit significantly higher failure risk.")
+            reasons.append(f"[PRIOR FAILURE] Preceding CI build failed at step '{prev_failed_step}'. Review this prior evidence; it does not establish the cause of the next outcome.")
         else:
-            reasons.append("[PRIOR FAILURE] Preceding CI build failed; root cause must be addressed before push.")
+            reasons.append("[PRIOR FAILURE] Preceding CI build failed; review the available evidence before the next run.")
     elif prev_status == "success":
-        reasons.append("[PRIOR SUCCESS] Preceding CI run succeeded; repository mainline stability is verified.")
+        reasons.append("[PRIOR SUCCESS] Preceding CI run succeeded; this does not verify current repository stability.")
 
     # 3. Code Churn Analysis
     if total_churn >= 250:
-        reasons.append(f"[HIGH CHURN] High code churn: +{lines_added}/-{lines_deleted} lines ({total_churn} total) across {files_changed} files increases regression probability.")
+        reasons.append(f"[HIGH CHURN] High code churn: +{lines_added}/-{lines_deleted} lines ({total_churn} total) across {files_changed} files is a heuristic review signal, not a measured probability increase.")
     elif total_churn >= 80:
         reasons.append(f"[MODERATE CHURN] Moderate code churn (+{lines_added}/-{lines_deleted} lines across {files_changed} files).")
     else:
-        reasons.append(f"[STABLE CHURN] Stable modification volume: +{lines_added}/-{lines_deleted} lines across {files_changed} file(s) within safe baselines.")
+        reasons.append(f"[STABLE CHURN] Stable modification volume: +{lines_added}/-{lines_deleted} lines across {files_changed} file(s) within the lower-churn advisory range.")
 
     # 4. Dependency & Sensitive Configuration Changes
     has_dep = dep_changed or any(k in f.lower() for f in rf for k in ["requirements", "package.json", "lock", "toml", "pom.xml"])
@@ -293,7 +291,7 @@ def generate_reasons(data: dict[str, Any], probability: float, threshold: float,
 
     # 7. Safe Pattern ONLY if truly clean
     if not has_dep and not has_wf and not (source_changed and not test_changed) and prev_status != "failure" and total_churn < 80:
-        reasons.append("[SAFE PATTERN] No high-risk configuration, dependency, or workflow modifications detected.")
+        reasons.append("[NO LISTED RULE SIGNAL] No high-risk configuration, dependency, or workflow modifications detected.")
 
     return reasons
 
@@ -374,10 +372,11 @@ def predict_build_risk(input_data: dict[str, Any]) -> dict[str, Any]:
         legacy_df = pd.DataFrame([clean_legacy])[legacy_features]
         prob = float(_model.predict_proba(legacy_df)[0][1]) * 100.0
 
+    raw_probability = prob
     threshold_pct = round(_threshold * 100.0, 1)
     prob_pct = round(prob, 1)
 
-    # Assess multi-factor ground-truth risk signals
+    # Assess heuristic advisory signals, not ground-truth causes
     prev_status = safe_text(input_data, "previous_build_status", "unknown").lower()
     dep_changed = safe_number(input_data, "dependency_file_changed", 0.0)
     wf_changed = safe_number(input_data, "workflow_changed", 0.0)
@@ -399,7 +398,7 @@ def predict_build_risk(input_data: dict[str, Any]) -> dict[str, Any]:
     if source_changed and not test_changed:
         critical_signals += 1
 
-    # Calibrate risk level using both statistical cutoff and critical ground-truth signals
+    # Derive advisory risk level; do not recalibrate or overwrite raw probability
     if prob_pct >= threshold_pct or critical_signals >= 3:
         risk_level = "High Risk"
         prediction = "Failure Risk Detected"
@@ -419,13 +418,18 @@ def predict_build_risk(input_data: dict[str, Any]) -> dict[str, Any]:
     error_category = detect_error_category(prev_error)
     risky_files = find_risky_files(safe_text(input_data, "changed_files", ""))
 
-    reasons = generate_reasons(input_data, prob_pct, threshold_pct, risk_level, risky_files)
+    reasons = generate_reasons(input_data, raw_probability, threshold_pct, risk_level, risky_files)
+    reasons.insert(0, "Advisory rules are heuristics; they do not change the raw model probability.")
     suggestions = generate_suggestions(input_data, error_category, risky_files, risk_level)
 
     test_metrics = _metadata.get("test_metrics", {})
 
     return {
-        "ml_failure_probability": prob_pct,
+        "ml_failure_probability": raw_probability,
+        "raw_model_probability": raw_probability,
+        "advisory_risk_score": prob_pct,
+        "advice_adjusted": abs(prob_pct - round(raw_probability, 1)) > 1e-12,
+        "score_semantics_version": "raw-and-advice-v1",
         "decision_threshold": threshold_pct,
         "final_failure_risk_score": prob_pct,
         "prediction": prediction,
@@ -438,11 +442,13 @@ def predict_build_risk(input_data: dict[str, Any]) -> dict[str, Any]:
         "reasons": reasons,
         "suggestions": suggestions,
         "model_info": {
-            "name": _metadata.get("selected_model", "random_forest_depth_10"),
+            "name": _metadata.get("selected_model", "legacy-artifact"),
+            "artifact_sha256": hashlib.sha256((MODEL_PATH if _artifact is not None else LEGACY_MODEL_PATH).read_bytes()).hexdigest(),
+            "scope": "Legacy served model; historical metrics are not corrected research-v2 evaluation",
             "calibration": _metadata.get("calibration_method", "sigmoid"),
             "threshold": threshold_pct,
-            "test_roc_auc": round(test_metrics.get("roc_auc", 0.9288), 4),
-            "test_pr_auc": round(test_metrics.get("pr_auc", 0.6420), 4),
-            "test_accuracy": round(test_metrics.get("accuracy", 0.9366) * 100.0, 1),
+            "test_roc_auc": test_metrics.get("roc_auc"),
+            "test_pr_auc": test_metrics.get("pr_auc"),
+            "test_accuracy": None if test_metrics.get("accuracy") is None else 100.0 * test_metrics["accuracy"],
         },
     }

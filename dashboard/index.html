@@ -1116,14 +1116,14 @@
 
           <div class="card-head">
             <h3>Prediction Output</h3>
-            <span class="badge">Calibrated AI</span>
+            <span class="badge">Model + advisory rules</span>
           </div>
 
           <div class="output-top">
 
             <div class="score-card">
 
-              <small>Calibrated Failure Risk</small>
+              <small>Rule-based Advisory Score</small>
 
               <div class="score" id="riskScore">
                 --
@@ -1134,9 +1134,9 @@
                   <div class="risk-meter-fill" id="riskMeterFill"></div>
                 </div>
                 <div class="risk-meter-labels">
-                  <span>0% (Safe)</span>
+                  <span>0 (Advisory)</span>
                   <span id="riskThresholdLabel">41.5% Cutoff</span>
-                  <span>100% (Fail)</span>
+                  <span>100 (Advisory)</span>
                 </div>
               </div>
 
@@ -1155,7 +1155,7 @@
               <div class="metric-grid">
 
                 <div class="metric">
-                  <small>ML Probability</small>
+                  <small>Raw ML Probability</small>
                   <strong id="mlScore">--</strong>
                 </div>
 
@@ -1537,12 +1537,12 @@
     }
 
     function renderPrediction(result) {
-      const score = Math.min(100, Math.max(0, Number(result.final_failure_risk_score || 0)));
+      const score = Math.min(100, Math.max(0, Number(result.advisory_risk_score ?? result.final_failure_risk_score ?? 0)));
 
-      document.getElementById("riskScore").innerText = score + "%";
+      document.getElementById("riskScore").innerText = score.toFixed(1) + "/100";
       document.getElementById("riskLevel").innerText = result.risk_level;
       document.getElementById("predictionText").innerText = result.prediction;
-      document.getElementById("mlScore").innerText = result.ml_failure_probability + "%";
+      document.getElementById("mlScore").innerText = Number(result.raw_model_probability ?? result.ml_failure_probability).toFixed(1) + "%";
 
       const fill = document.getElementById("riskMeterFill");
       if (fill) {
@@ -1571,7 +1571,7 @@
 
       renderListSafely("riskyFiles", result.risky_files, "No risky files detected");
 
-      const learningMsg = result.post_build_learning_status || (result.model_info ? `Active Model: ${result.model_info.name} (Calibrated PR-AUC: ${result.model_info.test_pr_auc})` : "Model calibrated");
+      const learningMsg = result.post_build_learning_status || (result.model_info ? `Model: ${result.model_info.name}. Raw ML probability and rule-based advice are separate. Historical metrics do not validate current-repository performance.` : "Model identity unavailable");
       renderListSafely("learning", [learningMsg], "Waiting for prediction");
 
       renderListSafely("reasons", result.reasons, "No reasons generated");
