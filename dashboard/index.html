@@ -815,6 +815,7 @@
       }
     }
   a{color:var(--cyan)} #combinedNav a{color:var(--cyan);display:inline-block;margin:8px} #strictLiveCard button{margin:12px 8px 12px 0} #strictLiveCard select,#researchPanel select{width:100%;min-height:44px} #researchPanel .table-wrap{overflow-x:auto} #researchPanel table{width:100%;border-collapse:collapse} #researchPanel th,#researchPanel td{padding:10px;text-align:left;border-bottom:1px solid #40504b} #researchPanel .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px} #researchPanel .kpi strong{display:block} #strictLiveCard pre{font-size:12px;line-height:1.5} button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #d2ff28;outline-offset:3px}@media(max-width:700px){#researchPanel .kpis{grid-template-columns:1fr}.history-table{display:block;overflow-x:auto}}
+.main>div{min-width:0} #commitId{min-width:0;overflow-wrap:anywhere} .copy-btn{flex-shrink:0} .commit-box p,.evidence p{overflow-wrap:anywhere} #researchHistory button{max-width:100%;overflow-wrap:anywhere;white-space:normal}
 </style>
 </head>
 
@@ -1145,7 +1146,7 @@
                 </div>
                 <div class="risk-meter-labels">
                   <span>0 (Advisory)</span>
-                  <span id="riskThresholdLabel">41.5% Cutoff</span>
+                  <span id="riskThresholdLabel">Advisory only</span>
                   <span>100 (Advisory)</span>
                 </div>
               </div>
@@ -1573,7 +1574,7 @@
         document.getElementById("ruleScore").innerText =
           result.decision_threshold + "% (Threshold)";
         const label = document.getElementById("riskThresholdLabel");
-        if (label) label.innerText = `${result.decision_threshold}% Cutoff`;
+        if (label) label.innerText = "Advisory only";
       } else {
         document.getElementById("ruleScore").innerText =
           (result.rule_based_risk_score ?? "--") + "%";
@@ -1801,6 +1802,7 @@
         connectedPrediction = result.prediction;
 
         renderPrediction(connectedPrediction);
+        if(connectedPrediction.record)window.dispatchEvent(new CustomEvent("legacyPredictionReady",{detail:connectedPrediction.record}));
         fillFeedbackForm();
 
         saveState();

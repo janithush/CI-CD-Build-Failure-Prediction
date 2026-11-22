@@ -1,0 +1,38 @@
+{
+  "source_rows": 20974,
+  "source_max_abs_probability_difference": 5.551115123125783e-16,
+  "source_threshold_disagreements": 0,
+  "stress_rows": 512,
+  "stress_max_abs_probability_difference": 3.3306690738754696e-16,
+  "stress_threshold_disagreements": 0,
+  "transformed_float32_matrix_exact": true,
+  "retrained": false,
+  "source_reported_sklearn": [
+    "1.9.1"
+  ],
+  "source_artifact_sha256": "3e52b08a4e0c678a7f6571349d97d5c7b1a8eb470a65d4ddfef0284b3b9e7dfb",
+  "reference_runtime": {
+    "python": "3.11.18",
+    "sklearn": "1.9.1",
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "scipy": "1.15.3",
+    "joblib": "1.6.0"
+  },
+  "comparison_runtime": {
+    "python": "3.11.18",
+    "sklearn": "1.9.1",
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "scipy": "1.15.3",
+    "joblib": "1.6.0"
+  },
+  "recorded_version_reference": true,
+  "original_representation_ok": true,
+  "version_warnings": [],
+  "comparison_mode": "original-object",
+  "input_data_sha256": "ba8edbfcd2ae1f0f8597f14b162048f87012e4b6a7de39a650a450537b6f3cbe",
+  "manifest_sha256": "7fdd5318d9d72a31094ac1818e8aeef5d9e1bf3b6708ea92c89de23e5cce92be",
+  "scope": "Numerical equivalence on listed inputs, not prospective accuracy or a recreation of every training-environment dependency.",
+  "reference_arrays_sha256": "4a9a1ce066bf6d8c38ef44f88b1fa50bf5882cca7862cac527ebc7340a8942ae"
+}

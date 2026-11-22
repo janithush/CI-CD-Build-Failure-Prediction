@@ -59,6 +59,7 @@ $('strictPreview').addEventListener('click',async()=>{
  // Keep prospective preview separate from legacy connectedPrediction and its feedback form.
  }catch(e){if(epoch!==generation)return;$('strictStatus').textContent=e.message;$('strictProvenance').textContent='No preview score was produced.';}finally{$('strictPreview').disabled=selectedRepository===null;}
 });
+window.addEventListener('legacyPredictionReady',event=>showScenario(event.detail));
 function showScenario(x){
  if(!x||!Number.isFinite(x.raw_probability)||!Number.isFinite(x.threshold)||!Array.isArray(x.missing_features)||!/^([a-f0-9]{32})$/.test(x.prediction_id))throw Error('Saved record is missing probability or identity');
  const current=$('github_repo_url').value.trim().replace(/\/$/,'');
@@ -92,5 +93,5 @@ $('replayPrediction').addEventListener('click',async()=>{
  try{const x=await request('/research/replay',{regime:$('studyRegime').value,repository:c.repository,run_id:c.run_id,run_attempt:c.run_attempt,model:$('liveModel').value});if(epoch!==generation)return;showScenario(x);$('replayStatus').textContent=x.notice;$('strictLiveCard').scrollIntoView({block:'start'});}
  catch(e){$('replayStatus').textContent=e.message;}finally{$('replayPrediction').disabled=!replayCases.length;}
 });
-request('/research/status').then(x=>{if(!x||typeof x.research_runtime!=='string'||typeof x.legacy_runtime_supported!=='boolean')throw Error('Runtime status unavailable');$('runtimeState').textContent='Research runtime '+x.research_runtime+'. Live preview: cold only; online history unavailable. '+(x.legacy_runtime_supported?'Legacy runtime check passed.':'Legacy inference unavailable: incompatible artifact runtime.');}).catch(e=>{$('runtimeState').textContent=e.message;});
+request('/research/status').then(x=>{if(!x||typeof x.research_runtime!=='string'||typeof x.legacy_runtime_supported!=='boolean')throw Error('Runtime status unavailable');$('runtimeState').textContent='Research runtime '+x.research_runtime+'. Live preview: cold only; online history unavailable. '+(x.legacy_runtime_supported?'Legacy prediction available via portable parameter export (not retraining).':'Legacy inference unavailable: incompatible artifact runtime.');}).catch(e=>{$('runtimeState').textContent=e.message;});
 })();

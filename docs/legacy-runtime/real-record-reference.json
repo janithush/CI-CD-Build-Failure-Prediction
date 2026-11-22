@@ -1,0 +1,11 @@
+{
+  "reference_sklearn": "1.9.1",
+  "prediction_id": "1eb9b98aa7ee4909b2f365b1900ab218",
+  "commit_id": "126fced115603398886393def5deb95372c51af2",
+  "original_probability": 0.06781355800113312,
+  "portable_probability": 0.06781355800113309,
+  "api_exported_probability": 0.06781355800113309,
+  "max_abs_difference": 2.7755575615628914e-17,
+  "cutoff_decision_matches": true,
+  "record_sha256": "a40879100426dc1dd899ce7896845544ce6af77fe9498737aae5b8f1bfd03178"
+}

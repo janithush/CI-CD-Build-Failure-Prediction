@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 import os,json,hashlib,sqlite3,uuid
 ROOT=Path(__file__).resolve().parents[1]
 DATABASE_PATH=Path(os.environ.get('BUILDRISK_DATABASE_PATH',str(ROOT/'data/research/buildrisk.sqlite3')))
-FIELDS=('mode','model','model_sha256','route','repository','commit_id','workflow_id','workflow_path','run_id','run_attempt','attempt','event_scenario','cutoff','regime','feature_contract','missing_features','raw_probability','threshold','features','sources','notice','history_policy')
+FIELDS=('mode','model','model_sha256','route','repository','commit_id','workflow_id','workflow_path','run_id','run_attempt','attempt','event_scenario','cutoff','regime','feature_contract','missing_features','raw_probability','advisory_risk_score','threshold','features','sources','notice','history_policy')
 def connect():
     DATABASE_PATH.parent.mkdir(parents=True,exist_ok=True)
     c=sqlite3.connect(DATABASE_PATH);c.row_factory=sqlite3.Row
@@ -15,7 +15,7 @@ def connect():
 def save(result):
     record={k:result[k] for k in FIELDS if k in result}
     # Probability is fractional. No heuristic advice overlay is applied here.
-    record['advisory_risk_score']=None
+    record.setdefault('advisory_risk_score',None)
     record['raw_probability_units']='fraction-0-to-1'
     record['input_sha256']=hashlib.sha256(json.dumps({k:record.get(k) for k in ('repository','commit_id','workflow_id','run_id','run_attempt','cutoff','feature_contract','route','features')},sort_keys=True,allow_nan=False).encode()).hexdigest()
     record['prediction_id']=uuid.uuid4().hex;record['recorded_at']=datetime.now(timezone.utc).isoformat()

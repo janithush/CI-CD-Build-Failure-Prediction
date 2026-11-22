@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "real_repository": "janithush/CI-CD-Build-Failure-Prediction",
+  "commit_id": "126fced115603398886393def5deb95372c51af2",
+  "raw_probability": 0.06781355800113309,
+  "advisory_risk_score": 6.8,
+  "prediction_id": "1eb9b98aa7ee4909b2f365b1900ab218",
+  "model_manifest_sha256": "7fdd5318d9d72a31094ac1818e8aeef5d9e1bf3b6708ea92c89de23e5cce92be",
+  "feature_contract": "legacy-prototype-defaults-v1",
+  "browser_errors": [],
+  "legacy_feedback": "disabled unbound path",
+  "assessment": "stored against exact prediction",
+  "history": "repository-scoped, selected again",
+  "record_export": true,
+  "token_persisted": false,
+  "ci_triggered": false
+}

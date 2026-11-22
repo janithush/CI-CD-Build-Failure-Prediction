@@ -20,3 +20,7 @@ The entry point imports separate helpers and uses data/models not covered by thi
 ## Combined application candidate
 
 The combined implementation does not expand the explicit MIT file list above. In particular, changes to inherited UI/API/analyzer files and feature-serving code derived from the archival research retain their existing rights and provenance. Newly added combined files are not automatically covered by the four-file grant. No new blanket licence or ownership transfer is made by this integration.
+
+## Legacy portable export
+
+The issue #17 JSON/NPZ export preserves parameters from the inherited fitted model. It is derived material, not a newly MIT-licensed model. The evaluator, export/validation tools, tests and repair documentation do not expand the explicit four-file MIT grant. Shukri and original contributors retain credit and existing rights.

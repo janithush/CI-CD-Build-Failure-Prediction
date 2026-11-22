@@ -233,6 +233,20 @@ def predict_connected_repo(data: ConnectedCommitData):
     except RuntimeError as e:
         raise HTTPException(status_code=503, detail=str(e)) from e
     prediction["repository"] = commit_data.get("repository", "")
+    from api import prediction_store as store, risk_analyzer as risk
+    record=store.save({
+        "mode":"legacy-commit-preview","model":"legacy-random-forest-sigmoid-portable",
+        "model_sha256":prediction["model_info"]["artifact_sha256"],
+        "route":"legacy-prototype-defaults","repository":commit_data.get("repository", ""),
+        "commit_id":commit_data.get("commit_id", ""),"workflow_id":None,"workflow_path":None,
+        "cutoff":datetime.now(timezone.utc).isoformat(),"feature_contract":prediction["feature_contract"],
+        "features":prediction["inference_features"],"missing_features":[k for k,v in prediction["inference_features"].items() if v is None],
+        "raw_probability":prediction["raw_model_probability"]/100,
+        "advisory_risk_score":prediction["advisory_risk_score"],"threshold":float(risk._threshold),
+        "notice":"Legacy prototype feature/default contract, not strict research cold preview or validated live accuracy. Raw probability and heuristic advice remain separate.",
+        "history_policy":"Prototype defaults may include 50 prior runs and 10% failure rate when evidence is unavailable; these are not observed history. Previous build evidence is not a verified outcome of this prediction."})
+    prediction["record"]=record
+
 
     save_prediction_history(
         "github-repo",
