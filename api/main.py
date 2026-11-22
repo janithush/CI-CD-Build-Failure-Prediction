@@ -212,7 +212,10 @@ def health():
 
 @app.post("/connect-github-repo")
 def connect_github_repo(data: GitHubRepoRequest):
-    commit_data = analyze_github_repository(data.repo_url, data.github_token)
+    import requests
+    try:commit_data = analyze_github_repository(data.repo_url, data.github_token)
+    except requests.RequestException as e:raise HTTPException(status_code=503,detail="GitHub request failed or timed out. No automatic retry.") from e
+    except (ValueError,KeyError,TypeError,IndexError) as e:raise HTTPException(status_code=422,detail="GitHub metadata is incomplete; repository was not connected") from e
     if "error" in commit_data:
         return commit_data
     return {

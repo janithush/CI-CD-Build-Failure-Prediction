@@ -120,7 +120,7 @@ def analyze_github_repository(
     response = requests.get(
         commits_url,
         headers=headers
-    )
+    , timeout=20)
 
 
 
@@ -197,7 +197,7 @@ def analyze_github_repository(
         details_url,
         headers=headers
 
-    )
+    , timeout=20)
 
 
 
@@ -427,7 +427,7 @@ def analyze_github_repository(
         actions_url,
         headers=headers
 
-    )
+    , timeout=20)
 
 
 
