@@ -8,5 +8,5 @@ joblib==1.6.0
 fastapi==0.115.12
 uvicorn==0.34.3
 pydantic==2.11.7
-requests==2.32.3
+requests==2.34.2
 PyYAML==6.0.2
