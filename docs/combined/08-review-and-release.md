@@ -38,3 +38,7 @@ No thesis file, table, result, model or scientific claim is changed here. If Jan
 - Do not enable external CI, retraining, deployment or multi-user hosting as a side effect of release preparation.
 
 The current result is ready for Janith's review as a local research candidate, not production readiness or thesis submission clearance.
+
+## Reported follow-up permission, 23 November 2026
+
+Janith reported a further call in which Shukri said changes to the project were acceptable because they are in the same research group. This is recorded as Janith's report of verbal approval, not a written licence or permission grant to other recipients. It does not widen the existing limited MIT scope. No model artifact or scientific result is changed under this note; any follow-up model/runtime repair remains a separate instruction and review.
