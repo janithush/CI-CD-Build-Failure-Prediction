@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import json
 import hashlib
+import warnings
+import sklearn
+from sklearn.exceptions import InconsistentVersionWarning
 import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
@@ -25,10 +28,14 @@ _model: Any = None
 _threshold: float = 0.415
 _feature_columns: list[str] = []
 _metadata: dict[str, Any] = {}
+_runtime_mismatches: list[str] = []
 
 if MODEL_PATH.exists():
     try:
-        _artifact = joblib.load(MODEL_PATH)
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter('always', InconsistentVersionWarning)
+            _artifact = joblib.load(MODEL_PATH)
+        _runtime_mismatches = sorted({getattr(w.message, 'original_sklearn_version', 'unknown') for w in caught if isinstance(w.message, InconsistentVersionWarning)})
         _model = _artifact["model"]
         _threshold = float(_artifact.get("threshold", 0.415))
         _feature_columns = list(_artifact.get("features", []))
@@ -351,6 +358,8 @@ def generate_suggestions(data: dict[str, Any], error_category: str, risky_files:
 
 def predict_build_risk(input_data: dict[str, Any]) -> dict[str, Any]:
     """Perform pre-execution build risk prediction using calibrated model pipeline."""
+    if _runtime_mismatches:
+        raise RuntimeError('Legacy model requires scikit-learn '+','.join(_runtime_mismatches)+'; installed '+sklearn.__version__+'. Prediction disabled rather than silently using an unsupported runtime.')
     if _model is None:
         raise RuntimeError("No trained model found. Please train models first.")
 
