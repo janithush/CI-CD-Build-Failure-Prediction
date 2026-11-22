@@ -31,7 +31,8 @@ def replay(data:Replay):return perform(service.replay_case,data.regime,data.repo
 
 @router.get('/status')
 def status():
-    return {'research_runtime':service.sklearn.__version__,'required_runtime':'1.7.2',
+    from api.risk_analyzer import _runtime_mismatches
+    return {'legacy_runtime_supported':not bool(_runtime_mismatches), 'legacy_runtime_mismatches':_runtime_mismatches, 'research_runtime':service.sklearn.__version__,'required_runtime':'1.7.2',
         'live_supported':'Explicit cold-onboarding prospective preview only',
         'online_live_available':False,'regimes':list(service.REGIMES),'models':list(service.MODELS),
         'notice':'Frozen replay and new prospective preview have different evidential roles.'}
