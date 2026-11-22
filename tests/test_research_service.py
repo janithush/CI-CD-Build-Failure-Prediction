@@ -1,12 +1,17 @@
-import unittest
+import unittest,tempfile
+from pathlib import Path
 from unittest.mock import patch
 import numpy as np
 import pandas as pd
 from fastapi.testclient import TestClient
-from api import research_service as service
+from api import research_service as service, prediction_store as store
 from api.main import app
 
 class ResearchServiceTests(unittest.TestCase):
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory();self.storage=patch.object(store,'DATABASE_PATH',Path(self.temp.name)/'test.sqlite3');self.storage.start()
+    def tearDown(self):self.storage.stop();self.temp.cleanup()
+
     def test_all_nine_frozen_probability_vectors(self):
         for regime in service.REGIMES:
             d=service.frozen_frame(regime)

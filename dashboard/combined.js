@@ -29,7 +29,7 @@ async function loadStudy(){
  finally{$('studyRetry').disabled=false;}
 }
 $('studyRetry').addEventListener('click',loadStudy);loadStudy();
-function invalidate(){$('researchHistory').replaceChildren();$('exportResearchRecord').disabled=true;shownPrediction=null;$('exportResearchRecord').disabled=true;$('researchFeedback').disabled=true;generation++;selectedRepository=null;$('strictPreview').disabled=true;$('liveWorkflow').disabled=true;$('strictStatus').textContent='Repository changed. Find workflows again.';$('strictProvenance').textContent='';}
+function invalidate(){connectedCommitData=null;connectedPrediction=null;$('predictBtn').disabled=true;$('feedbackBtn').disabled=true;setConnectionStatus('idle','Legacy not connected');clearPredictionOutput();$('researchHistory').replaceChildren();$('exportResearchRecord').disabled=true;shownPrediction=null;$('exportResearchRecord').disabled=true;$('researchFeedback').disabled=true;generation++;selectedRepository=null;$('strictPreview').disabled=true;$('liveWorkflow').disabled=true;$('strictStatus').textContent='Repository changed. Find workflows again.';$('strictProvenance').textContent='';}
 $('discoverWorkflows').addEventListener('click',async()=>{
  const epoch=++generation;selectedRepository=null;
  $('discoverWorkflows').disabled=true;$('strictPreview').disabled=true;$('liveWorkflow').disabled=true;$('strictStatus').textContent='Reading public workflow metadata...';$('strictProvenance').textContent='';
@@ -76,7 +76,7 @@ $('researchFeedback').addEventListener('click',async()=>{
 $('researchHistoryRefresh').addEventListener('click',async()=>{
  $('researchHistory').textContent='Loading repository-scoped records...';$('researchHistoryRefresh').disabled=true;
  const repository=$('github_repo_url').value.trim();
- try{const x=await request('/research/history?repository='+encodeURIComponent(repository));if(repository!==$('github_repo_url').value.trim())return;if(!Array.isArray(x.history))throw Error('Invalid history response');$('researchHistory').replaceChildren();
+ try{const x=await request('/research/history?repository='+encodeURIComponent(repository));if(repository!==$('github_repo_url').value.trim())return;if(!Array.isArray(x.history)||x.history.some(r=>!r||typeof r.mode!=='string'||typeof r.model!=='string'||typeof r.commit_id!=='string'||typeof r.recorded_at!=='string'||!/^([a-f0-9]{32})$/.test(r.prediction_id)))throw Error('Research history metadata is incomplete; no records displayed');$('researchHistory').replaceChildren();
  for(const record of x.history){const button=document.createElement('button');button.type='button';button.textContent=record.mode+' / '+record.model+' / '+record.commit_id.slice(0,8)+' / '+record.recorded_at;button.addEventListener('click',()=>{if(repository!==$('github_repo_url').value.trim())return;showScenario(record);$('strictLiveCard').scrollIntoView({block:'start'});});$('researchHistory').append(button);}
  if(!x.history.length)$('researchHistory').textContent='No research records for this repository.';
  }catch(e){$('researchHistory').textContent=e.message;}finally{$('researchHistoryRefresh').disabled=false;}

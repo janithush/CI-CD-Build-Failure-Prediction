@@ -814,7 +814,7 @@
         grid-template-columns: 1fr;
       }
     }
-  a{color:var(--cyan)} #combinedNav a{color:var(--cyan);display:inline-block;margin:8px} #strictLiveCard button{margin:12px 0} #strictLiveCard select,#researchPanel select{width:100%;min-height:44px} #researchPanel .table-wrap{overflow-x:auto} #researchPanel table{width:100%;border-collapse:collapse} #researchPanel th,#researchPanel td{padding:10px;text-align:left;border-bottom:1px solid #40504b} #researchPanel .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px} #researchPanel .kpi strong{display:block} #strictLiveCard pre{font-size:12px;line-height:1.5} button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #d2ff28;outline-offset:3px}@media(max-width:700px){#researchPanel .kpis{grid-template-columns:1fr}.history-table{display:block;overflow-x:auto}}
+  a{color:var(--cyan)} #combinedNav a{color:var(--cyan);display:inline-block;margin:8px} #strictLiveCard button{margin:12px 8px 12px 0} #strictLiveCard select,#researchPanel select{width:100%;min-height:44px} #researchPanel .table-wrap{overflow-x:auto} #researchPanel table{width:100%;border-collapse:collapse} #researchPanel th,#researchPanel td{padding:10px;text-align:left;border-bottom:1px solid #40504b} #researchPanel .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px} #researchPanel .kpi strong{display:block} #strictLiveCard pre{font-size:12px;line-height:1.5} button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #d2ff28;outline-offset:3px}@media(max-width:700px){#researchPanel .kpis{grid-template-columns:1fr}.history-table{display:block;overflow-x:auto}}
 </style>
 </head>
 
@@ -897,16 +897,16 @@
         <div class="card">
 
           <div class="card-head">
-            <h3>GitHub Repository Connection</h3>
+            <h3>Legacy repository connection</h3>
             <span class="status" id="connectionStatus">Not Connected</span>
           </div>
 
           <div class="repo-chips">
             <small>Quick Pick:</small>
-            <span class="repo-chip" onclick="selectRepo('https://github.com/pallets/flask')">pallets/flask</span>
-            <span class="repo-chip" onclick="selectRepo('https://github.com/tiangolo/typer')">tiangolo/typer</span>
-            <span class="repo-chip" onclick="selectRepo('https://github.com/fastapi/fastapi')">fastapi/fastapi</span>
-            <span class="repo-chip" onclick="selectRepo('https://github.com/axios/axios')">axios/axios</span>
+            <button type="button" class="repo-chip" onclick="selectRepo('https://github.com/pallets/flask')">pallets/flask</button>
+            <button type="button" class="repo-chip" onclick="selectRepo('https://github.com/tiangolo/typer')">tiangolo/typer</button>
+            <button type="button" class="repo-chip" onclick="selectRepo('https://github.com/fastapi/fastapi')">fastapi/fastapi</button>
+            <button type="button" class="repo-chip" onclick="selectRepo('https://github.com/axios/axios')">axios/axios</button>
           </div>
 
           <div class="form-grid">
@@ -920,7 +920,7 @@
               <label>GitHub token (optional, legacy connection only)</label>
               <div class="input-with-toggle">
                 <input id="github_token" type="password" placeholder="Optional legacy connection token">
-                <button type="button" class="toggle-btn" onclick="toggleTokenVisibility()" id="toggleTokenBtn" title="Toggle visibility">👁️</button>
+                <button type="button" class="toggle-btn" onclick="toggleTokenVisibility()" aria-label="Show or hide session token" id="toggleTokenBtn" title="Toggle visibility">👁️</button>
               </div>
             </div>
 
@@ -1009,7 +1009,7 @@
             <small>Commit ID</small>
             <p style="display: flex; align-items: center; justify-content: space-between;">
               <span id="commitId">--</span>
-              <button type="button" class="copy-btn" onclick="copyCommitSha()" id="copyShaBtn">Copy SHA</button>
+              <button type="button" class="copy-btn" onclick="copyCommitSha()" aria-label="Copy connected commit SHA" id="copyShaBtn">Copy SHA</button>
             </p>
           </div>
 
@@ -1068,17 +1068,17 @@
 
             <div class="group wide">
               <label>Commit ID</label>
-              <input id="feedback_commit_id" placeholder="Auto-filled commit ID">
+              <input id="feedback_commit_id" disabled placeholder="Auto-filled commit ID">
             </div>
 
             <div class="group">
               <label>Predicted Risk Score</label>
-              <input id="feedback_risk_score" type="number" placeholder="Auto-filled risk score">
+              <input id="feedback_risk_score" disabled type="number" placeholder="Auto-filled risk score">
             </div>
 
             <div class="group">
               <label>Predicted Risk Level</label>
-              <select id="feedback_risk_level">
+              <select id="feedback_risk_level" disabled>
                 <option value="High Risk">High Risk</option>
                 <option value="Medium Risk">Medium Risk</option>
                 <option value="Low Risk">Low Risk</option>
@@ -1087,7 +1087,7 @@
 
             <div class="group">
               <label>Actual Build Result</label>
-              <select id="feedback_actual_result">
+              <select id="feedback_actual_result" disabled>
                 <option value="failure">Failure</option>
                 <option value="success">Success</option>
                 <option value="unknown">Unknown</option>
@@ -1096,12 +1096,12 @@
 
             <div class="group">
               <label>Failed Step</label>
-              <input id="feedback_failed_step" placeholder="Auto-filled failed step">
+              <input id="feedback_failed_step" disabled placeholder="Auto-filled failed step">
             </div>
 
             <div class="group wide">
               <label>Actual Error Message</label>
-              <textarea id="feedback_error_message" placeholder="Auto-filled previous build evidence"></textarea>
+              <textarea id="feedback_error_message" disabled placeholder="Auto-filled previous build evidence"></textarea>
             </div>
 
           </div>
@@ -1869,10 +1869,7 @@
     async function loadHistory() {
       document.getElementById("historyBody").textContent = "Loading history...";
       try {
-        const repo =
-          connectedCommitData?.repository ||
-          localStorage.getItem("buildrisk_repo") ||
-          "";
+        const repo=connectedCommitData?.repository||document.getElementById("github_repo_url").value.trim().replace(/^https:\/\/github\.com\//,"").replace(/\.git\/?$|\/$/g,"");
 
         const response = await legacyRequest(
           `${API_BASE}/history?repository=${encodeURIComponent(repo)}`
@@ -1928,7 +1925,7 @@
 
           const tdScore = document.createElement("td");
           tdScore.className = "history-score";
-          tdScore.textContent = `${item.risk_score ?? "--"}%`;
+          tdScore.textContent = `${item.risk_score ?? "--"}/100`;
 
           const tdLevel = document.createElement("td");
           const levelBadge = document.createElement("span");

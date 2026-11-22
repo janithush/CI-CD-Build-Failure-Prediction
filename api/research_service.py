@@ -102,7 +102,9 @@ class PublicGitHub:
 def repository_name(value):
     match=re.fullmatch(r'(?:https://github\.com/)?([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+?)(?:\.git)?/?',value.strip())
     if not match:raise ResearchUnavailable('Use a public owner/repository name or an https://github.com/owner/repository URL')
-    return match.group(1)
+    result=match.group(1)
+    if any(x in {'.','..'} for x in result.split('/')):raise ResearchUnavailable('Repository path components are invalid')
+    return result
 
 def workflows(value):
     repo=repository_name(value);provider=PublicGitHub()
