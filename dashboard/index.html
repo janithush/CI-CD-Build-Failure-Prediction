@@ -814,7 +814,8 @@
         grid-template-columns: 1fr;
       }
     }
-  </style>
+  #combinedNav a{color:var(--cyan);display:inline-block;margin:8px} #strictLiveCard button{margin:12px 0} #strictLiveCard select,#researchPanel select{width:100%;min-height:44px} #researchPanel .table-wrap{overflow-x:auto} #researchPanel table{width:100%;border-collapse:collapse} #researchPanel th,#researchPanel td{padding:10px;text-align:left;border-bottom:1px solid #40504b} #researchPanel .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px} #researchPanel .kpi strong{display:block} #strictLiveCard pre{font-size:12px;line-height:1.5} button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #d2ff28;outline-offset:3px}@media(max-width:700px){#researchPanel .kpis{grid-template-columns:1fr}.history-table{display:block;overflow-x:auto}}
+</style>
 </head>
 
 <body>
@@ -854,9 +855,7 @@
         </h2>
 
         <p>
-          Connect any public or private GitHub repository. BuildRisk AI fetches
-          latest commit changes, previous GitHub Actions evidence, post-build logs,
-          risky files, and generates explainable failure-risk predictions.
+          A local research application built on Shukri's dashboard. Connect a repository, inspect a prospective cold-start model preview, and review the frozen research evidence. No workflow is triggered and no live accuracy gain is claimed.
         </p>
 
       </div>
@@ -864,23 +863,23 @@
       <div class="kpis">
 
         <div class="kpi">
-          <small>Dataset</small>
-          <strong id="kpiDataset">24,479</strong>
+          <small>Application</small>
+          <strong id="kpiDataset">Local demo</strong>
         </div>
 
         <div class="kpi">
-          <small>Failures</small>
-          <strong id="kpiFailures">2,049</strong>
+          <small>Evidence</small>
+          <strong id="kpiFailures">Frozen study</strong>
         </div>
 
         <div class="kpi">
-          <small>Best Model</small>
-          <strong id="kpiModel">Random Forest</strong>
+          <small>Live preview</small>
+          <strong id="kpiModel">Cold only</strong>
         </div>
 
         <div class="kpi">
-          <small>Test ROC-AUC</small>
-          <strong id="kpiRocAuc">92.9%</strong>
+          <small>Live accuracy</small>
+          <strong id="kpiRocAuc">Not validated</strong>
         </div>
 
       </div>
@@ -888,7 +887,8 @@
     </section>
 
 
-    <section class="main">
+    <div class="card" id="combinedNav"><a href="#livePanel">Live analysis</a> | <a href="#researchPanel">Research evidence</a> | <a href="#historyPanel">History / feedback</a><p>Shukri's original UI, extended with Janith's research. Inherited rights and limited MIT scope remain separate.</p></div>
+    <section class="main" id="livePanel">
 
       <!-- LEFT COLUMN -->
       <div>
@@ -931,7 +931,7 @@
               Connect Repository
             </button>
           
-            <button id="predictBtn" class="secondary" onclick="predictConnectedRepo()" disabled>
+            <button title="Legacy artifact only; availability is checked by the API" id="predictBtn" class="secondary" onclick="predictConnectedRepo()" disabled>
               Predict Risk
             </button>
           
@@ -942,6 +942,15 @@
 
         </div>
 
+
+        <div class="card" id="strictLiveCard"><div class="card-head"><h3>Research model live preview</h3><span class="badge">Prospective / cold</span></div>
+          <p>Uses the latest default-branch commit and exact workflow definition for a hypothetical first push attempt at preview time. Not a prediction for an already observed run. No online-history model is offered.</p>
+          <label for="liveModel">Research model</label><select id="liveModel"><option value="C1">C1 change-context</option><option value="B0">B0 baseline</option><option value="extended">Extended (exploratory)</option></select>
+          <button id="discoverWorkflows" type="button" class="secondary">Find public workflows</button>
+          <label for="liveWorkflow">Workflow at the selected repository</label><select id="liveWorkflow" disabled><option value="">Find workflows first</option></select>
+          <button id="strictPreview" type="button" class="primary" disabled>Preview research model</button><p id="strictStatus" role="status">Enter a public repository above, then find its workflows.</p><pre id="strictProvenance" style="white-space:pre-wrap;overflow-wrap:anywhere"></pre>
+          <p>Preview needs local API port 8000. Optional server-side public-read token can avoid anonymous GitHub rate limits. No token is embedded here.</p>
+        </div>
 
         <!-- AUTO FETCHED COMMIT FEATURES -->
         <div class="card">
@@ -1109,7 +1118,7 @@
 
       <!-- RIGHT COLUMN -->
       <div>
-        <div class="card" aria-label="Research version selector"><label for="researchVersion"><strong>Research version</strong></label><select id="researchVersion" style="width:100%;margin-top:10px" onchange="if(this.value==='v2') location.href='research-v2.html'"><option value="v1" selected>Version 1 - original prototype</option><option value="v2">Version 2 - verified research</option></select><p style="font-size:12px;margin-top:12px">Historical upstream prototype. Its legacy headline metrics have validity issues and are not the corrected v2 evaluation. Live score and overlay remain separate from research.</p></div>
+        <div class="card"><h3>One combined application</h3><p>Live preview and frozen study evidence share this interface. They do not share a validation claim.</p><p id="runtimeState" role="status">Checking model availability...</p><p>Existing release snapshots are unchanged. <a href="research-v2.html">Open archived v2 results view</a></p></div>
 
         <!-- PREDICTION OUTPUT -->
         <div class="card">
@@ -1212,8 +1221,8 @@
         <!-- MODEL TRANSPARENCY CARD -->
         <div class="card" style="margin-top: 14px;">
           <div class="card-head">
-            <h3>Model Architecture & Verification</h3>
-            <span class="badge" style="background: rgba(100, 255, 218, .15); color: var(--cyan); border-color: rgba(100, 255, 218, .3);">Validated</span>
+            <h3>Historical legacy model information</h3>
+            <span class="badge" style="background: rgba(100, 255, 218, .15); color: var(--cyan); border-color: rgba(100, 255, 218, .3);">Not live validation</span>
           </div>
           <div class="model-specs-grid">
             <div class="spec-item">
@@ -1222,23 +1231,23 @@
             </div>
             <div class="spec-item">
               <small>Probability Calibration</small>
-              <strong id="specCalib">Sigmoid (Platt Scaling)</strong>
+              <strong id="specCalib">Historical artifact metadata</strong>
             </div>
             <div class="spec-item">
-              <small>Held-Out Test ROC-AUC</small>
-              <strong id="specRoc" style="color: var(--lime);">92.88%</strong>
+              <small>Legacy ROC-AUC (not corrected v2)</small>
+              <strong id="specRoc" style="color: var(--lime);">Not displayed</strong>
             </div>
             <div class="spec-item">
-              <small>Held-Out Test PR-AUC</small>
-              <strong id="specPr" style="color: var(--cyan);">64.20%</strong>
+              <small>Legacy PR-AUC (not corrected v2)</small>
+              <strong id="specPr" style="color: var(--cyan);">Not displayed</strong>
             </div>
             <div class="spec-item wide">
-              <small>Optimal Decision Threshold</small>
+              <small>Legacy Model Threshold</small>
               <strong id="specThreshold">41.5% Failure Probability Cutoff</strong>
             </div>
             <div class="spec-item wide">
               <small>Evaluated Benchmark Dataset</small>
-              <strong>24,479 Workflow Runs (Zero-Overlap Chronological Split)</strong>
+              <strong>Historical upstream benchmark has validity limitations; see frozen research evidence</strong>
             </div>
           </div>
         </div>
@@ -1248,7 +1257,7 @@
         <div class="card" style="margin-top: 14px;">
 
           <div class="card-head">
-            <h3>Prediction History</h3>
+            <h3 id="historyPanel">Prediction History</h3>
             <span class="badge">SQLite Log</span>
           </div>
 
@@ -1285,6 +1294,11 @@
 
     </section>
 
+    <section id="researchPanel"><div class="card"><h2>Frozen research evidence</h2><p>These study cohorts are not live performance for the connected repository.</p></div><div class="card"><span class="tag">No demonstrated reliable transfer gain</span><p class="summary">Small cold-history AP changes do not outweigh the uncertainty and warning burden. The richer online extension performs worse.</p><div class="note">AP is a ranking measure, not an accuracy percentage or the chance that an individual build will fail. The displayed warning rates use fixed source-selected thresholds, not validated operational cutoffs.</div></div>
+<div class="card"><h2>Matched before and after</h2><label for="studyRegime">Evaluation regime</label><select id="studyRegime"><option value="original5-zero">Original five projects - zero target-outcome history</option><option value="later4-zero">Later four projects - zero target-outcome history</option><option value="original5-online">Original five projects - online released history</option></select><p class="muted" id="studyNote"></p><div class="table-wrap"><table><thead><tr><th>Model</th><th class="num">Mean AP</th><th class="num">Brier</th><th class="num">Warnings</th><th class="num">False / 100</th></tr></thead><tbody id="studyMacro"></tbody></table></div><p class="muted">Equal-project means on identical rows. B0 is the base system; C1 adds change context; extended adds static declaration/clock descriptors and, in online mode, released history descriptors.</p><div class="kpis"><div class="kpi">Rows<strong id="studyRows">-</strong></div><div class="kpi">Extended minus C1 AP<strong id="studyDelta">-</strong></div><div class="kpi">Exploratory 95% interval<strong id="studyInterval" style="font-size:18px">-</strong></div></div></div>
+<div class="card"><h2>Project-level results</h2><div class="table-wrap"><table><thead><tr><th>Project</th><th class="num">Rows</th><th class="num">Failures</th><th>Model</th><th class="num">AP</th></tr></thead><tbody id="studyProjects"></tbody></table></div></div>
+<div class="card"><h2>What was actually checked</h2><ul><li>471 observed within-run attempt pairs, including 152 failure-to-success pairs across 131 distinct runs. No workflow was triggered by this study.</li><li>Among 87 failed attempts in the fixed 500-attempt audit: 39 test/compile-like, five environment-like, three mixed and 40 unknown.</li><li>Seventeen static descriptors and six released-evidence history descriptors. B0 already had workflow failure history and run-start clock inputs.</li><li>Replayed saved models and recomputed AP, Brier and confusion totals on all matched rows.</li><li>Four original unavailable log archives and one oversized log remain explicit limits. Missing evidence is never turned into a clean label.</li></ul><div class="note">Rerun discordance and log signatures are not causal code/non-code labels. There is no consistent per-test history ledger. All nine external projects were already viewed before the extension, so its results are exploratory.</div></div>
+</section>
   </div>
   <script>
     let connectedCommitData = null;
@@ -1822,10 +1836,9 @@
 
 
     function startAutoFetchWatcher() {
-      if (autoFetchTimer) {
-        clearInterval(autoFetchTimer);
-      }
-      autoFetchTimer = setInterval(autoFetchLatestCommit, 30000);
+      // Manual provider refresh only. A page visit never starts GitHub polling.
+      if (autoFetchTimer) clearInterval(autoFetchTimer);
+      autoFetchTimer = null;
     }
 
 
@@ -1848,11 +1861,12 @@
 
         const result = await response.json();
 
-        if (result.error) {
-          showToast(result.error, "error");
+        if (!response.ok || result.error) {
+          showToast(result.detail || result.error || "Request failed", "error");
           return;
         }
 
+        if (!result.prediction) throw new Error(result.detail || "Prediction unavailable");
         connectedPrediction = result.prediction;
 
         renderPrediction(connectedPrediction);
@@ -1863,7 +1877,7 @@
         showToast(`Prediction: ${connectedPrediction.risk_level} (${connectedPrediction.final_failure_risk_score}%)`, "success");
 
       } catch (error) {
-        showToast("Unable to predict risk. Check API is running.", "error");
+        showToast(error.message || "Unable to predict risk. Check API is running.", "error");
       } finally {
         predictBtn.disabled = false;
         predictBtn.innerText = "Predict Risk";
@@ -2035,39 +2049,10 @@
 
     async function checkApiHealth() {
       const statusEl = document.getElementById("apiStatus");
-      if (!statusEl) return;
-      try {
-        const res = await fetch(`${API_BASE}/health`, { signal: AbortSignal.timeout(3000) });
-        if (res.ok) {
-          const data = await res.json();
-          statusEl.textContent = `● API LIVE (${data.model_version || "Calibrated"})`;
-          statusEl.style.color = "var(--lime)";
-          statusEl.style.borderColor = "rgba(210, 255, 40, .3)";
-
-          // Dynamically enrich UI model specs
-          if (data.metrics) {
-            if (data.metrics.roc_auc) {
-              const rocAucPct = (data.metrics.roc_auc * 100).toFixed(1) + "%";
-              document.getElementById("kpiRocAuc").innerText = rocAucPct;
-              document.getElementById("specRoc").innerText = (data.metrics.roc_auc * 100).toFixed(2) + "%";
-            }
-            if (data.metrics.pr_auc) {
-              document.getElementById("specPr").innerText = (data.metrics.pr_auc * 100).toFixed(2) + "%";
-            }
-            if (data.model_version) {
-              document.getElementById("kpiModel").innerText = data.model_version.replace(/_/g, " ").toUpperCase();
-              document.getElementById("specModel").innerText = data.model_version.replace(/_/g, " ");
-            }
-          }
-        } else {
-          statusEl.textContent = "● API ERROR";
-          statusEl.style.color = "var(--orange)";
-        }
-      } catch (e) {
-        statusEl.textContent = "● API OFFLINE";
-        statusEl.style.color = "var(--red)";
-        statusEl.style.borderColor = "rgba(255, 92, 92, .3)";
-      }
+      try { const res = await fetch(`${API_BASE}/health`, {signal: AbortSignal.timeout(3000)});
+        if (!res.ok) throw Error("API unavailable");
+        statusEl.textContent = "Local API available";
+      } catch (e) { statusEl.textContent = "Local API offline (start port 8000)"; }
     }
 
     restoreSavedState();
@@ -2076,6 +2061,7 @@
     checkApiHealth();
     setInterval(checkApiHealth, 15000);
   </script>
+  <script src="combined.js"></script>
   </body>
   
   </html>
