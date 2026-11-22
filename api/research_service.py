@@ -75,6 +75,8 @@ def replay_case(regime, repository, run_id, run_attempt, name):
     return clean({'mode':'frozen-replay','raw_probability':float(p[0]),'threshold':threshold,
         'model':name,'model_sha256':digest,'route':'history' if rich else 'no-history',
         'repository':repository,'commit_id':row.commit_id,'run_id':run_id,'run_attempt':run_attempt,
+        'workflow_id':str(row.workflow_id),'workflow_path':None,
+        'features':clean(d[artifact(name,rich)[0]['features']].iloc[0].to_dict()),
         'cutoff':str(row.run_started_at),'regime':regime,'feature_contract':'research-v2-frozen-v1',
         'missing_features':[x for x in artifact(name,rich)[0]['features'] if pd.isna(row[x])],
         'notice':'Historical replay, not a forecast for a new build.'})
@@ -189,6 +191,7 @@ def live_cold_preview(value, workflow_id, model='C1'):
     return clean({'mode':'prospective-cold-preview','model':model,'raw_probability':float(p[0]),
         'threshold':threshold,'model_sha256':digest,'route':'no-history','repository':repo,
         'commit_id':sha,'workflow_id':str(selected['id']),'workflow_path':selected['path'],
+        'features':clean(frame[artifact(model,False)[0]['features']].iloc[0].to_dict()),
         'cutoff':cutoff,'attempt':1,'event_scenario':'push-at-preview-time',
         'feature_contract':'cold-boundary-static-v1','missing_features':[x for x in artifact(model,False)[0]['features'] if pd.isna(frame.iloc[0][x])],
         'history_policy':'All target outcomes withheld; prior change context starts empty at this explicit cold boundary.',

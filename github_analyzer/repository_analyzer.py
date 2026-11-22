@@ -60,16 +60,10 @@ def extract_owner_repo(repo_url):
 # ==================================================
 
 def github_headers(github_token=""):
-    headers = {
-        "Accept": "application/vnd.github+json"
-    }
-    cleaned_token = str(github_token).strip() if github_token else ""
-    # If no valid token supplied, seamlessly fallback to backend .env token
-    if not cleaned_token or "xxxx" in cleaned_token.lower() or len(cleaned_token) < 20:
-        cleaned_token = load_env_token()
-
-    if cleaned_token and "xxxx" not in cleaned_token.lower() and len(cleaned_token) >= 20:
-        headers["Authorization"] = f"Bearer {cleaned_token}"
+    # Explicit session token only. Never silently load a repository .env secret.
+    headers={"Accept":"application/vnd.github+json", "User-Agent":"BuildRisk-local-demo"}
+    token=str(github_token or "").strip()
+    if token:headers["Authorization"]="Bearer "+token
     return headers
 
 

@@ -1,7 +1,7 @@
 'use strict';
 (() => {
 const $=id=>document.getElementById(id);
-let studies=null, selectedRepository=null, generation=0;
+let studies=null, selectedRepository=null, generation=0, shownPrediction=null, replayCases=[];
 async function request(path,body) {
  const response=await fetch(API_BASE+path,{method:body?'POST':'GET',headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(60000)});
  let data;try{data=await response.json();}catch{throw Error('API did not return readable JSON');}
@@ -29,7 +29,7 @@ async function loadStudy(){
  finally{$('studyRetry').disabled=false;}
 }
 $('studyRetry').addEventListener('click',loadStudy);loadStudy();
-function invalidate(){generation++;selectedRepository=null;$('strictPreview').disabled=true;$('liveWorkflow').disabled=true;$('strictStatus').textContent='Repository changed. Find workflows again.';$('strictProvenance').textContent='';}
+function invalidate(){$('researchHistory').replaceChildren();$('exportResearchRecord').disabled=true;shownPrediction=null;$('exportResearchRecord').disabled=true;$('researchFeedback').disabled=true;generation++;selectedRepository=null;$('strictPreview').disabled=true;$('liveWorkflow').disabled=true;$('strictStatus').textContent='Repository changed. Find workflows again.';$('strictProvenance').textContent='';}
 $('discoverWorkflows').addEventListener('click',async()=>{
  const epoch=++generation;selectedRepository=null;
  $('discoverWorkflows').disabled=true;$('strictPreview').disabled=true;$('liveWorkflow').disabled=true;$('strictStatus').textContent='Reading public workflow metadata...';$('strictProvenance').textContent='';
@@ -43,20 +43,54 @@ $('discoverWorkflows').addEventListener('click',async()=>{
  }catch(e){if(epoch===generation)$('strictStatus').textContent=e.message;}finally{$('discoverWorkflows').disabled=false;}
 });
 $('github_repo_url').addEventListener('input',invalidate);
-$('liveModel').addEventListener('change',()=>{generation++;$('strictProvenance').textContent='';$('strictStatus').textContent='Selection changed. Request a new preview.';});
-$('liveWorkflow').addEventListener('change',()=>{generation++;$('strictProvenance').textContent='';$('strictStatus').textContent='Selection changed. Request a new preview.';});
+$('changeRepoBtn').addEventListener('click',invalidate);
+$('exportResearchRecord').addEventListener('click',()=>{if(!shownPrediction)return;const url=URL.createObjectURL(new Blob([JSON.stringify(shownPrediction,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='buildrisk-'+shownPrediction.prediction_id+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
+$('liveModel').addEventListener('change',()=>{shownPrediction=null;$('exportResearchRecord').disabled=true;$('researchFeedback').disabled=true;generation++;$('strictProvenance').textContent='';$('strictStatus').textContent='Selection changed. Request a new preview.';});
+$('liveWorkflow').addEventListener('change',()=>{shownPrediction=null;$('exportResearchRecord').disabled=true;$('researchFeedback').disabled=true;generation++;$('strictProvenance').textContent='';$('strictStatus').textContent='Selection changed. Request a new preview.';});
 $('strictPreview').addEventListener('click',async()=>{
  if(selectedRepository!==$('github_repo_url').value.trim()){$('strictStatus').textContent='Repository changed. Find workflows again.';return;}
  const epoch=++generation;
- $('strictProvenance').textContent='';$('strictPreview').disabled=true;$('strictStatus').textContent='Building exact-commit cold-start features and checking model...';
+ shownPrediction=null;$('exportResearchRecord').disabled=true;$('researchFeedback').disabled=true;$('strictProvenance').textContent='';$('strictPreview').disabled=true;$('strictStatus').textContent='Building exact-commit cold-start features and checking model...';
  try{
  const x=await request('/research/preview',{repository:selectedRepository,workflow_id:Number($('liveWorkflow').value),model:$('liveModel').value});
  if(epoch!==generation)return;
  if(!x||!Number.isFinite(x.raw_probability)||x.raw_probability<0||x.raw_probability>1||!Number.isFinite(x.threshold)||x.threshold<0||x.threshold>1||!/^([a-f0-9]{40})$/.test(x.commit_id)||!/^([a-f0-9]{64})$/.test(x.model_sha256)||!Array.isArray(x.missing_features))throw Error('Preview response has incomplete probability or provenance; no score displayed.');
- $('strictStatus').textContent=x.notice;
- $('strictProvenance').textContent='Raw model probability: '+(100*x.raw_probability).toFixed(2)+'%\nModel cutoff: '+(100*x.threshold).toFixed(2)+'%\nModel: '+x.model+' / '+x.route+'\nCommit: '+x.commit_id+'\nWorkflow: '+x.workflow_path+'\nScenario cutoff: '+x.cutoff+'\nContract: '+x.feature_contract+'\nArtifact: '+x.model_sha256+'\nMissing by design: '+x.missing_features.join(', ')+'\n'+x.history_policy;
+ showScenario(x);
  // Keep prospective preview separate from legacy connectedPrediction and its feedback form.
  }catch(e){if(epoch!==generation)return;$('strictStatus').textContent=e.message;$('strictProvenance').textContent='No preview score was produced.';}finally{$('strictPreview').disabled=selectedRepository===null;}
+});
+function showScenario(x){
+ if(!x||!Number.isFinite(x.raw_probability)||!Number.isFinite(x.threshold)||!Array.isArray(x.missing_features)||!/^([a-f0-9]{32})$/.test(x.prediction_id))throw Error('Saved record is missing probability or identity');
+ const current=$('github_repo_url').value.trim().replace(/\/$/,'');
+ if(current!==x.repository&&!current.endsWith('/'+x.repository)){$('github_repo_url').value=x.repository;selectedRepository=null;$('strictPreview').disabled=true;$('liveWorkflow').disabled=true;}
+ $('exportResearchRecord').disabled=false;
+ $('strictStatus').textContent=x.notice; shownPrediction=x; $('researchFeedback').disabled=!x.prediction_id; $('researchFeedbackState').textContent=x.feedback_policy||'Assessment only. No retraining.';
+ $('strictProvenance').textContent='Record: '+(x.prediction_id||'unsaved')+'\nMode: '+x.mode+'\nRepository: '+x.repository+'\nRaw model probability: '+(100*x.raw_probability).toFixed(2)+'%\nModel cutoff: '+(100*x.threshold).toFixed(2)+'%\nModel: '+x.model+' / '+x.route+'\nCommit: '+x.commit_id+'\nWorkflow: '+(x.workflow_path||x.workflow_id||'not recorded')+'\nRun / attempt: '+(x.run_id||'hypothetical')+' / '+(x.run_attempt||x.attempt||'--')+'\nPrediction cutoff: '+x.cutoff+'\nContract: '+x.feature_contract+'\nArtifact: '+x.model_sha256+'\nMissing by design: '+x.missing_features.join(', ')+'\n'+(x.history_policy||'Historical replay, not a new forecast.')+'\nInput hash: '+(x.input_sha256||'not recorded');
+}
+$('researchFeedback').addEventListener('click',async()=>{
+ if(!shownPrediction)return;const snapshot=shownPrediction;$('researchFeedback').disabled=true;
+ try{const x=await request('/research/feedback',{prediction_id:snapshot.prediction_id,repository:snapshot.repository,assessment:$('researchAssessment').value});if(shownPrediction?.prediction_id===snapshot.prediction_id)$('researchFeedbackState').textContent=x.learning_status+' Record: '+x.prediction_id;}
+ catch(e){$('researchFeedbackState').textContent=e.message;}
+ finally{$('researchFeedback').disabled=!shownPrediction;}
+});
+$('researchHistoryRefresh').addEventListener('click',async()=>{
+ $('researchHistory').textContent='Loading repository-scoped records...';$('researchHistoryRefresh').disabled=true;
+ const repository=$('github_repo_url').value.trim();
+ try{const x=await request('/research/history?repository='+encodeURIComponent(repository));if(repository!==$('github_repo_url').value.trim())return;if(!Array.isArray(x.history))throw Error('Invalid history response');$('researchHistory').replaceChildren();
+ for(const record of x.history){const button=document.createElement('button');button.type='button';button.textContent=record.mode+' / '+record.model+' / '+record.commit_id.slice(0,8)+' / '+record.recorded_at;button.addEventListener('click',()=>{if(repository!==$('github_repo_url').value.trim())return;showScenario(record);$('strictLiveCard').scrollIntoView({block:'start'});});$('researchHistory').append(button);}
+ if(!x.history.length)$('researchHistory').textContent='No research records for this repository.';
+ }catch(e){$('researchHistory').textContent=e.message;}finally{$('researchHistoryRefresh').disabled=false;}
+});
+$('findReplayCases').addEventListener('click',async()=>{
+ $('findReplayCases').disabled=true;$('replayPrediction').disabled=true;$('replayCase').disabled=true;const regime=$('studyRegime').value;
+ try{const x=await request('/research/cases?regime='+encodeURIComponent(regime));if(regime!==$('studyRegime').value)return;if(!Array.isArray(x.cases)||!x.cases.length)throw Error('No frozen examples available');replayCases=x.cases;$('replayCase').replaceChildren();x.cases.forEach((c,i)=>{const o=document.createElement('option');o.value=i;o.textContent=c.repository+' / run '+c.run_id+' / attempt '+c.run_attempt;$('replayCase').append(o);});$('replayCase').disabled=false;$('replayPrediction').disabled=false;$('replayStatus').textContent=x.notice;}
+ catch(e){$('replayStatus').textContent=e.message;}finally{$('findReplayCases').disabled=false;}
+});
+$('studyRegime').addEventListener('change',()=>{replayCases=[];$('replayCase').disabled=true;$('replayPrediction').disabled=true;$('replayStatus').textContent='Regime changed. Find cases again.';});
+$('replayPrediction').addEventListener('click',async()=>{
+ const c=replayCases[Number($('replayCase').value)];if(!c)return;$('replayPrediction').disabled=true;const epoch=++generation;
+ try{const x=await request('/research/replay',{regime:$('studyRegime').value,repository:c.repository,run_id:c.run_id,run_attempt:c.run_attempt,model:$('liveModel').value});if(epoch!==generation)return;showScenario(x);$('replayStatus').textContent=x.notice;$('strictLiveCard').scrollIntoView({block:'start'});}
+ catch(e){$('replayStatus').textContent=e.message;}finally{$('replayPrediction').disabled=!replayCases.length;}
 });
 request('/research/status').then(x=>{if(!x||typeof x.research_runtime!=='string'||typeof x.legacy_runtime_supported!=='boolean')throw Error('Runtime status unavailable');$('runtimeState').textContent='Research runtime '+x.research_runtime+'. Live preview: cold only; online history unavailable. '+(x.legacy_runtime_supported?'Legacy runtime check passed.':'Legacy inference unavailable: incompatible artifact runtime.');}).catch(e=>{$('runtimeState').textContent=e.message;});
 })();
