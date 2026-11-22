@@ -3,16 +3,12 @@
 from __future__ import annotations
 
 import json
-import hashlib
-import warnings
-import sklearn
-from sklearn.exceptions import InconsistentVersionWarning
+import os
 import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-import joblib
 import numpy as np
 import pandas as pd
 
@@ -20,42 +16,30 @@ ROOT = Path(__file__).resolve().parents[1]
 MODEL_PATH = ROOT / "models" / "saved" / "research_build_failure_model.joblib"
 LEGACY_MODEL_PATH = ROOT / "models" / "saved" / "best_build_failure_model.pkl"
 REPORT_PATH = ROOT / "reports" / "research_model_results.json"
-DATABASE_PATH = ROOT / "data" / "research" / "buildrisk.sqlite3"
+DATABASE_PATH = Path(os.environ.get("BUILDRISK_DATABASE_PATH",str(ROOT / "data" / "research" / "buildrisk.sqlite3")))
 
-# Load the trained artifact and metadata
+# Serving uses a separately exported, non-pickle parameter artifact. The original
+# sklearn object is preserved and is loaded only by the offline export/diagnostic tools.
+COMPATIBLE_MODEL_PATH = ROOT / "models/compatible/legacy_rf_sigmoid_v1.json"
 _artifact: dict[str, Any] | None = None
 _model: Any = None
 _threshold: float = 0.415
 _feature_columns: list[str] = []
 _metadata: dict[str, Any] = {}
 _runtime_mismatches: list[str] = []
-
-if MODEL_PATH.exists():
-    try:
-        with warnings.catch_warnings(record=True) as caught:
-            warnings.simplefilter('always', InconsistentVersionWarning)
-            _artifact = joblib.load(MODEL_PATH)
-        _runtime_mismatches = sorted({getattr(w.message, 'original_sklearn_version', 'unknown') for w in caught if isinstance(w.message, InconsistentVersionWarning)})
-        _model = _artifact["model"]
-        _threshold = float(_artifact.get("threshold", 0.415))
-        _feature_columns = list(_artifact.get("features", []))
-        _metadata = dict(_artifact.get("metadata", {}))
-    except Exception:
-        _artifact = None
-
-if _model is None and LEGACY_MODEL_PATH.exists():
-    try:
-        _model = joblib.load(LEGACY_MODEL_PATH)
-    except Exception:
-        _model = None
-
-if REPORT_PATH.exists() and not _metadata:
-    try:
-        _metadata = json.loads(REPORT_PATH.read_text(encoding="utf-8"))
-        if not _feature_columns:
-            _feature_columns = _metadata.get("feature_columns", [])
-    except Exception:
-        pass
+_legacy_unavailable_reason = "Compatible legacy artifact is missing"
+try:
+    from api.portable_legacy import PortableLegacy
+    _model = PortableLegacy(COMPATIBLE_MODEL_PATH)
+    _threshold = float(_model.manifest["threshold"])
+    _feature_columns = list(_model.features)
+    _metadata = json.loads(REPORT_PATH.read_text()) if REPORT_PATH.exists() else {}
+    _artifact = {"model":_model,"features":_feature_columns,"threshold":_threshold,"metadata":_metadata}
+    _legacy_unavailable_reason = ""
+except Exception:
+    _model = None
+    _runtime_mismatches = ["portable-artifact-unavailable-or-invalid"]
+    _legacy_unavailable_reason = "Compatible legacy artifact is missing or failed integrity/schema checks"
 
 
 def safe_number(data: dict, key: str, default: float = 0.0) -> float:
@@ -359,27 +343,18 @@ def generate_suggestions(data: dict[str, Any], error_category: str, risky_files:
 def predict_build_risk(input_data: dict[str, Any]) -> dict[str, Any]:
     """Perform pre-execution build risk prediction using calibrated model pipeline."""
     if _runtime_mismatches:
-        raise RuntimeError('Legacy model requires scikit-learn '+','.join(_runtime_mismatches)+'; installed '+sklearn.__version__+'. Prediction disabled rather than silently using an unsupported runtime.')
+        raise RuntimeError('Prediction disabled: '+(_legacy_unavailable_reason or 'runtime validation failed')+'. No fallback to an unsupported original artifact.')
     if _model is None:
         raise RuntimeError("No trained model found. Please train models first.")
 
     # Format input into research model features
     df = build_research_features(input_data)
 
-    # Predict calibrated probability
+    # Fail closed on a schema or inference error. No silent 9-feature substitute.
     try:
         prob = float(_model.predict_proba(df)[0][1]) * 100.0
-    except Exception:
-        # Fallback to legacy 9-feature input if model is legacy format
-        legacy_features = [
-            "files_changed", "lines_added", "lines_deleted", "total_changes",
-            "dependency_file_changed", "test_file_changed", "workflow_changed",
-            "source_file_changed", "risk_file_count",
-        ]
-        clean_legacy = {f: safe_number(input_data, f) for f in legacy_features}
-        clean_legacy["total_changes"] = clean_legacy["lines_added"] + clean_legacy["lines_deleted"]
-        legacy_df = pd.DataFrame([clean_legacy])[legacy_features]
-        prob = float(_model.predict_proba(legacy_df)[0][1]) * 100.0
+    except Exception as e:
+        raise RuntimeError("Prediction disabled: compatible legacy inference failed") from e
 
     raw_probability = prob
     threshold_pct = round(_threshold * 100.0, 1)
@@ -450,9 +425,15 @@ def predict_build_risk(input_data: dict[str, Any]) -> dict[str, Any]:
         "risky_files": risky_files,
         "reasons": reasons,
         "suggestions": suggestions,
+        "inference_features": {k:(None if pd.isna(v) else v) for k,v in df.iloc[0].to_dict().items()},
+        "feature_contract":"legacy-prototype-defaults-v1",
         "model_info": {
             "name": _metadata.get("selected_model", "legacy-artifact"),
-            "artifact_sha256": hashlib.sha256((MODEL_PATH if _artifact is not None else LEGACY_MODEL_PATH).read_bytes()).hexdigest(),
+            "artifact_sha256": _model.manifest_sha256,
+            "serving_format":"legacy-rf-sigmoid-v1",
+            "array_sha256":getattr(_model,"manifest",{}).get("array_sha256"),
+            "source_artifact_sha256":getattr(_model,"manifest",{}).get("source_sha256"),
+            "compatibility_note":"Parameter-preserving export, no retraining; verified numerically against the original in sklearn 1.9.1 on the documented reference inputs.",
             "scope": "Legacy served model; historical metrics are not corrected research-v2 evaluation",
             "calibration": _metadata.get("calibration_method", "sigmoid"),
             "threshold": threshold_pct,

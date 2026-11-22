@@ -1,0 +1,11 @@
+{
+  "frozen_scientific_files_verified": 33,
+  "original_artifacts_verified": {
+    "models/saved/research_build_failure_model.joblib": "3e52b08a4e0c678a7f6571349d97d5c7b1a8eb470a65d4ddfef0284b3b9e7dfb",
+    "models/saved/best_build_failure_model.pkl": "301196104cf7a55c0da1bcbc0004e18dd80716d0b6c766274e19d71a26a5c45e",
+    "models/saved/build_failure_model.pkl": "3ffdb1df6a3f4d8cbcb49333659f1036393b0c11536f707ad1819339ac97dc87"
+  },
+  "protected_paths_changed": [],
+  "retrained": false,
+  "release_created": false
+}

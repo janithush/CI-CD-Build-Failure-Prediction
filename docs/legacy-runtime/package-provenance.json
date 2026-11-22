@@ -1,0 +1,11 @@
+{
+  "metadata_source": "https://pypi.org/pypi/scikit-learn/json",
+  "release_page": "https://pypi.org/project/scikit-learn/1.9.1/",
+  "version": "1.9.1",
+  "requires_python": ">=3.11",
+  "reference_wheel": "scikit_learn-1.9.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+  "wheel_url": "https://files.pythonhosted.org/packages/69/46/f8b95a7a16fd13b458401d5e85a63d88ecb3679f3649812d5fdbea4c8357/scikit_learn-1.9.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+  "wheel_sha256": "52a0703bbc07ad27f560fa63fa68e4c54dd735bfbbf65b4dd3c225dc7547b6df",
+  "official_digest_matches": true,
+  "installation": "Separate Python 3.11.18 environment installed exact pinned requirements from official PyPI; application Python 3.10 environment unchanged."
+}

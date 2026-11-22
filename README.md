@@ -21,7 +21,8 @@ Native GitHub fork history includes a removed token-shaped literal in an old ups
 | Frozen evidence | All three historical regimes, project-level metrics and local fitted-model case replay |
 | Provenance | Exact commit/workflow, real run/attempt for replay, cutoff, model/artifact, route, missingness, input hash and export |
 | Local history / assessment | Exact-repository records and fixed usefulness choices tied to prediction ID; no learning |
-| Unsupported paths | Inherited artifact inference is disabled under its incompatible runtime; no live online-history mode or verified run-outcome feedback |
+| Legacy prediction | Restored through a parameter-preserving portable export, not retraining; explicit prototype-default contract |
+| Unsupported paths | No live online-history mode or verified run-outcome feedback; invalid portable artifacts are refused |
 
 A prospective preview is not a forecast retrospectively attached to a known run. Raw research probabilities are fractions in records and percentages in the UI. They are not altered by the legacy rule-based advice score. Frozen AP is not accuracy or a connected-repository failure rate. No reliable transfer gain, safe CI skipping, causal failure diagnosis or developer benefit is claimed.
 
@@ -52,7 +53,7 @@ Open `http://127.0.0.1:8080/dashboard/index.html`. Keep both terminals open, the
 4. Under **Research evidence**, switch study regimes, load frozen examples and replay one with the selected model. Historical replay is labelled, not passed off as a new forecast.
 5. Export the displayed immutable record, save a usefulness assessment or load repository-scoped research records. These actions never update models.
 
-The original **Connect Repository** control still fetches legacy commit/evidence fields. The separate **Predict Risk** legacy path reports unavailable while its trained artifact/runtime mismatch remains unresolved. The old unbound post-build feedback form is deliberately disabled. Do not bypass that gate or retrain on viewed target results to make the display work.
+The original **Connect & Fetch Repository** and **Predict Risk** controls now serve the legacy model through a fingerprint-checked, non-pickle parameter export. Original artifacts are unchanged; there was no retraining or calibration change. Legacy predictions retain prototype defaults and are not strict cold previews or evidence of live accuracy. Records keep raw probability and heuristic advice separate. The old unbound post-build feedback remains disabled. See the [repair method, provenance and limits](docs/legacy-runtime/README.md).
 
 For a backend-free, frozen-results-only view, run just the static server and open `http://127.0.0.1:8080/dashboard/research-v2.html`. The integrated page also renders frozen evidence without the API, but discovery/replay/history need the local API. Missing/malformed JSON is recoverable through the explicit reload control.
 
@@ -74,7 +75,7 @@ python tests/browser_combined.py --screenshots evidence/local
 
 Browser acceptance is external-call-free by default. It distinguishes controlled UI responses from nine actual local model replays. A separately authorized public-metadata test can use the explicit `--live-public-repository` and `--workflow-id` arguments documented in [the acceptance report](docs/combined/07-acceptance-report.md). No enabled CI workflow is added.
 
-Implementation reports are in [docs/combined](docs/combined/08-review-and-release.md). Review the stacked PRs in issue order #1 through #8. Do not merge, retag, publish a release or deploy until Janith approves. The candidate's implementation tests do not revise dissertation results or clear the thesis for submission.
+Implementation reports are in [docs/combined](docs/combined/08-review-and-release.md). Issues #1 through #8 were merged with Janith's approval. The separate [issue #17 legacy runtime repair](docs/legacy-runtime/README.md) is a new review candidate. Do not merge this repair, retag, publish a release or deploy until Janith approves. Implementation tests do not revise dissertation results or clear the thesis for submission.
 
 ## Preserved research views and releases
 
