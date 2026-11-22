@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -32,6 +32,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+from api.research_routes import router as research_router
+app.include_router(research_router)
 
 def init_history_db() -> None:
     DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -214,7 +217,10 @@ def connect_github_repo(data: GitHubRepoRequest):
 @app.post("/predict-connected-repo")
 def predict_connected_repo(data: ConnectedCommitData):
     commit_data = data.dict()
-    prediction = predict_build_risk(commit_data)
+    try:
+        prediction = predict_build_risk(commit_data)
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e)) from e
     prediction["repository"] = commit_data.get("repository", "")
 
     save_prediction_history(
