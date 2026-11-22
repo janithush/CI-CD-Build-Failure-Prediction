@@ -833,7 +833,7 @@
         </div>
 
         <div>
-          <h1>BuildRisk AI</h1>
+          <h1>GitHub Build Failure <span>Research Dashboard</span></h1>
           <p>GitHub-based CI/CD risk prediction platform</p>
         </div>
 
@@ -917,7 +917,7 @@
             </div>
 
             <div class="group wide">
-              <label>GitHub Personal Access Token (Optional — System Token Active)</label>
+              <label>GitHub token (optional, legacy connection only)</label>
               <div class="input-with-toggle">
                 <input id="github_token" type="password" placeholder="Optional legacy connection token">
                 <button type="button" class="toggle-btn" onclick="toggleTokenVisibility()" id="toggleTokenBtn" title="Toggle visibility">👁️</button>
@@ -949,6 +949,7 @@
           <button id="discoverWorkflows" type="button" class="secondary">Find public workflows</button>
           <label for="liveWorkflow">Workflow at the selected repository</label><select id="liveWorkflow" disabled><option value="">Find workflows first</option></select>
           <button id="strictPreview" type="button" class="primary" disabled>Preview research model</button><p id="strictStatus" role="status">Enter a public repository above, then find its workflows.</p><pre id="strictProvenance" style="white-space:pre-wrap;overflow-wrap:anywhere"></pre>
+          <label for="researchAssessment">Your assessment of this displayed preview or replay</label><select id="researchAssessment"><option value="unclear">Unclear</option><option value="helpful">Helpful</option><option value="not-helpful">Not helpful</option></select><button id="exportResearchRecord" type="button" disabled>Export displayed record JSON</button><button id="researchFeedback" type="button" disabled>Save assessment for this prediction</button><p id="researchFeedbackState" role="status">Assessments are local notes, not verified CI outcomes or training data.</p><button id="researchHistoryRefresh" type="button">Load research records for entered repository</button><div id="researchHistory" role="status"></div>
           <p>Preview needs local API port 8000. Optional server-side public-read token can avoid anonymous GitHub rate limits. No token is embedded here.</p>
         </div>
 
@@ -1059,8 +1060,8 @@
         <div class="card">
 
           <div class="card-head">
-            <h3>Post-Build Feedback</h3>
-            <span class="badge">Audit & Retraining Queue</span>
+            <h3>Legacy post-build feedback (unavailable)</h3>
+            <span class="badge">Legacy display only</span>
           </div>
 
           <div class="form-grid">
@@ -1294,7 +1295,7 @@
 
     </section>
 
-    <section id="researchPanel"><div class="card"><h2>Frozen research evidence</h2><p id="studyLoadState" role="status">Loading frozen evidence...</p><button id="studyRetry" type="button">Reload frozen evidence</button><p>On a phone, swipe wide tables sideways.</p><p>These study cohorts are not live performance for the connected repository.</p></div><div class="card"><span class="tag">No demonstrated reliable transfer gain</span><p class="summary">Small cold-history AP changes do not outweigh the uncertainty and warning burden. The richer online extension performs worse.</p><div class="note">AP is a ranking measure, not an accuracy percentage or the chance that an individual build will fail. The displayed warning rates use fixed source-selected thresholds, not validated operational cutoffs.</div></div>
+    <section id="researchPanel"><div class="card"><h2>Frozen research evidence</h2><p id="studyLoadState" role="status">Loading frozen evidence...</p><button id="studyRetry" type="button">Reload frozen evidence</button><p>On a phone, swipe wide tables sideways.</p><button id="findReplayCases" type="button">Find frozen replay examples for selected regime</button><label for="replayCase">Frozen case</label><select id="replayCase" disabled><option>No cases loaded</option></select><button id="replayPrediction" type="button" disabled>Replay with selected research model</button><p id="replayStatus" role="status">Uses the research model selector in Live analysis. This is historical replay, not a new forecast.</p><p>These study cohorts are not live performance for the connected repository.</p></div><div class="card"><span class="tag">No demonstrated reliable transfer gain</span><p class="summary">Small cold-history AP changes do not outweigh the uncertainty and warning burden. The richer online extension performs worse.</p><div class="note">AP is a ranking measure, not an accuracy percentage or the chance that an individual build will fail. The displayed warning rates use fixed source-selected thresholds, not validated operational cutoffs.</div></div>
 <div class="card"><h2>Matched before and after</h2><label for="studyRegime">Evaluation regime</label><select id="studyRegime"><option value="original5-zero">Original five projects - zero target-outcome history</option><option value="later4-zero">Later four projects - zero target-outcome history</option><option value="original5-online">Original five projects - online released history</option></select><p class="muted" id="studyNote"></p><div class="table-wrap"><table><thead><tr><th>Model</th><th class="num">Mean AP</th><th class="num">Brier</th><th class="num">Warnings</th><th class="num">False / 100</th></tr></thead><tbody id="studyMacro"></tbody></table></div><p class="muted">Equal-project means on identical rows. B0 is the base system; C1 adds change context; extended adds static declaration/clock descriptors and, in online mode, released history descriptors.</p><div class="kpis"><div class="kpi">Rows<strong id="studyRows">-</strong></div><div class="kpi">Extended minus C1 AP<strong id="studyDelta">-</strong></div><div class="kpi">Exploratory 95% interval<strong id="studyInterval" style="font-size:18px">-</strong></div></div></div>
 <div class="card"><h2>Project-level results</h2><div class="table-wrap"><table><thead><tr><th>Project</th><th class="num">Rows</th><th class="num">Failures</th><th>Model</th><th class="num">AP</th></tr></thead><tbody id="studyProjects"></tbody></table></div></div>
 <div class="card"><h2>What was actually checked</h2><ul><li>471 observed within-run attempt pairs, including 152 failure-to-success pairs across 131 distinct runs. No workflow was triggered by this study.</li><li>Among 87 failed attempts in the fixed 500-attempt audit: 39 test/compile-like, five environment-like, three mixed and 40 unknown.</li><li>Seventeen static descriptors and six released-evidence history descriptors. B0 already had workflow failure history and run-start clock inputs.</li><li>Replayed saved models and recomputed AP, Brier and confusion totals on all matched rows.</li><li>Four original unavailable log archives and one oversized log remain explicit limits. Missing evidence is never turned into a clean label.</li></ul><div class="note">Rerun discordance and log signatures are not causal code/non-code labels. There is no consistent per-test history ledger. All nine external projects were already viewed before the extension, so its results are exploratory.</div></div>
@@ -1418,20 +1419,10 @@
     }
 
     function saveState() {
-      const repoUrl = document.getElementById("github_repo_url").value.trim();
-      localStorage.setItem("buildrisk_repo_url", repoUrl);
-
-      // Security: Never save personal access tokens in localStorage
+      const repoUrl=document.getElementById("github_repo_url").value.trim();
+      if (/^(https:\/\/github\.com\/)?[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\/?$/.test(repoUrl)) localStorage.setItem("buildrisk_repo_url",repoUrl);
       localStorage.removeItem("buildrisk_token");
-
-      if (connectedCommitData) {
-        localStorage.setItem("buildrisk_commit", JSON.stringify(connectedCommitData));
-        localStorage.setItem("buildrisk_repo", connectedCommitData.repository || "");
-      }
-
-      if (connectedPrediction) {
-        localStorage.setItem("buildrisk_prediction", JSON.stringify(connectedPrediction));
-      }
+      if(connectedCommitData) localStorage.setItem("buildrisk_repo",connectedCommitData.repository||"");
     }
 
     function clearSavedPrediction() {
@@ -1529,6 +1520,7 @@
 
     function selectRepo(url) {
       document.getElementById("github_repo_url").value = url;
+      document.getElementById("github_repo_url").dispatchEvent(new Event("input",{bubbles:true}));
       showToast(`Selected: ${url.replace('https://github.com/', '')}`, "info");
     }
 
@@ -1601,88 +1593,20 @@
 
 
     function fillFeedbackForm() {
-      const status =
-        normalizeStatus(connectedCommitData?.previous_build_status);
-
-      document.getElementById("feedback_commit_id").value =
-        connectedCommitData?.commit_id || "";
-
-      document.getElementById("feedback_risk_score").value =
-        connectedPrediction?.final_failure_risk_score || "";
-
-      document.getElementById("feedback_risk_level").value =
-        connectedPrediction?.risk_level || "Medium Risk";
-
-      document.getElementById("feedback_failed_step").value =
-        connectedCommitData?.previous_failed_step || "";
-
-      if (status === "success") {
-        document.getElementById("feedback_actual_result").value = "success";
-        document.getElementById("feedback_error_message").value =
-          "Build completed successfully. No error message.";
-        document.getElementById("feedbackBtn").disabled =
-          connectedPrediction ? false : true;
-      }
-
-      else if (status === "failure") {
-        document.getElementById("feedback_actual_result").value = "failure";
-        document.getElementById("feedback_error_message").value =
-          connectedCommitData?.previous_error_message ||
-          "Build failed. Error log not available.";
-        document.getElementById("feedbackBtn").disabled =
-          connectedPrediction ? false : true;
-      }
-
-      else if (status === "cancelled" || status === "timed_out") {
-        document.getElementById("feedback_actual_result").value = "failure";
-        document.getElementById("feedback_error_message").value =
-          `Build ${status}. Treating as unsuccessful CI result.`;
-        document.getElementById("feedbackBtn").disabled =
-          connectedPrediction ? false : true;
-      }
-
-      else {
-        document.getElementById("feedback_actual_result").value = "unknown";
-        document.getElementById("feedback_failed_step").value = "";
-        document.getElementById("feedback_error_message").value =
-          "Build is still running or final result is not available yet.";
-        document.getElementById("feedbackBtn").disabled = true;
-      }
+      document.getElementById("feedback_commit_id").value=connectedCommitData?.commit_id||"";
+      document.getElementById("feedback_risk_score").value=connectedPrediction?.advisory_risk_score??"";
+      document.getElementById("feedback_actual_result").value="unknown";
+      document.getElementById("feedback_failed_step").value="";
+      document.getElementById("feedback_error_message").value="Previous-run evidence is not automatically the outcome of this prediction.";
+      document.getElementById("feedbackBtn").disabled=true;
+      document.getElementById("feedbackStatus").textContent="Legacy feedback has no prediction/run binding and is disabled. Research assessments bind to the displayed record and never retrain a model.";
     }
 
-
     function restoreSavedState() {
-      const savedCommit = localStorage.getItem("buildrisk_commit");
-      const savedPrediction = localStorage.getItem("buildrisk_prediction");
-      const savedRepoUrl = localStorage.getItem("buildrisk_repo_url");
-
-      // Security: Purge any stored token from browser storage
+      const saved=localStorage.getItem("buildrisk_repo_url");
       localStorage.removeItem("buildrisk_token");
-
-      if (savedRepoUrl) {
-        document.getElementById("github_repo_url").value = savedRepoUrl;
-      }
-
-      if (savedCommit) {
-        connectedCommitData = JSON.parse(savedCommit);
-
-        updateFetchedCommitFeatures(connectedCommitData);
-        updatePostBuildEvidence(connectedCommitData);
-
-        setConnectionStatus("connected", "Connected");
-
-        document.getElementById("predictBtn").disabled = false;
-
-        document.getElementById("predictionText").innerText =
-          "Repository connected. Click Predict Risk.";
-      }
-
-      if (savedPrediction) {
-        connectedPrediction = JSON.parse(savedPrediction);
-
-        renderPrediction(connectedPrediction);
-        fillFeedbackForm();
-      }
+      if(saved && /^(https:\/\/github\.com\/)?[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\/?$/.test(saved))document.getElementById("github_repo_url").value=saved;
+      // Old browser commit/prediction snapshots are not trusted or restored.
     }
 
     function changeRepository() {

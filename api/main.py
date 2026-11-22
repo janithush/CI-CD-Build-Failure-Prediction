@@ -8,7 +8,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -16,7 +17,7 @@ from api.risk_analyzer import predict_build_risk, _metadata
 from github_analyzer.repository_analyzer import analyze_github_repository
 
 ROOT = Path(__file__).resolve().parents[1]
-DATABASE_PATH = ROOT / "data" / "research" / "buildrisk.sqlite3"
+DATABASE_PATH = Path(os.environ.get("BUILDRISK_DATABASE_PATH",str(ROOT / "data" / "research" / "buildrisk.sqlite3")))
 
 app = FastAPI(
     title="CI/CD Build Failure Risk Prediction API",
@@ -26,11 +27,24 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=[],
+    allow_origin_regex=r"^http://(127\.0\.0\.1|localhost)(:\d+)?$",
+    allow_credentials=False,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
 )
+
+
+@app.middleware("http")
+async def local_only(request: Request, call_next):
+    from urllib.parse import urlparse
+    client=request.client.host if request.client else ""
+    if client not in {"127.0.0.1","::1","testclient"}:
+        return JSONResponse(status_code=403,content={"detail":"This application is local-only; remote access is not approved"})
+    origin=request.headers.get("origin")
+    if origin and (urlparse(origin).scheme!="http" or urlparse(origin).hostname not in {"127.0.0.1","localhost"}):
+        return JSONResponse(status_code=403,content={"detail":"Only a local HTTP dashboard origin is permitted"})
+    return await call_next(request)
 
 
 from api.research_routes import router as research_router
@@ -188,18 +202,12 @@ def home():
 @app.get("/health")
 def health():
     db_ok = DATABASE_PATH.exists()
-    test_metrics = _metadata.get("test_metrics", {})
-    return {
-        "status": "healthy",
-        "database_connected": db_ok,
-        "model_version": _metadata.get("selected_model", "random_forest_depth_10"),
-        "calibration": _metadata.get("calibration_method", "sigmoid"),
-        "metrics": {
-            "roc_auc": test_metrics.get("roc_auc", 0.9288),
-            "pr_auc": test_metrics.get("pr_auc", 0.6420),
-            "accuracy": test_metrics.get("accuracy", 0.9366),
-        },
-    }
+    from api.risk_analyzer import _runtime_mismatches
+    return {"status":"local-api-available","database_connected":db_ok,
+        "legacy_inference_available":not bool(_runtime_mismatches),
+        "model_version":_metadata.get("selected_model"),
+        "notice":"API availability is not model validation. See /research/status."}
+
 
 
 @app.post("/connect-github-repo")
@@ -238,6 +246,8 @@ def predict_connected_repo(data: ConnectedCommitData):
 
 @app.get("/history")
 def get_prediction_history(repository: str = ""):
+    if not repository:
+        return {"history":[],"notice":"Select an exact repository. Legacy records lack the new provenance contract."}
     if not DATABASE_PATH.exists():
         return {"history": []}
 
@@ -267,8 +277,4 @@ def get_prediction_history(repository: str = ""):
 
 @app.post("/post-build-feedback")
 def post_build_feedback(data: PostBuildFeedback):
-    save_feedback(data)
-    return {
-        "message": "Post-build feedback recorded successfully",
-        "learning_status": "Feedback queued for model retraining verification",
-    }
+    raise HTTPException(status_code=409,detail="Legacy feedback has no prediction identity and is disabled. Use provenance-bound research assessments; no retraining occurs.")
