@@ -1,0 +1,28 @@
+{
+  "message": "GitHub repository connected successfully",
+  "connection_status": "connected",
+  "commit_analysis": {
+    "repository": "janithush/CI-CD-Build-Failure-Prediction",
+    "repo_url": "https://github.com/janithush/CI-CD-Build-Failure-Prediction",
+    "commit_id": "ae420f5e361c7f0d16f2224f1934ac894d8a6e71",
+    "commit_message": "Show dashboard preview and explain local viewing and releases",
+    "files_changed": 3,
+    "lines_added": 14,
+    "lines_deleted": 3,
+    "total_changes": 17,
+    "dependency_file_changed": 0,
+    "test_file_changed": 0,
+    "workflow_changed": 0,
+    "source_file_changed": 0,
+    "risk_file_count": 0,
+    "changed_files": "FILES_SHA256.json, README.md, docs/dashboard-v2-preview.png",
+    "previous_build_status": "unknown",
+    "previous_failed_step": "",
+    "repository_prior_runs": 0.0,
+    "repository_prior_failure_rate": 0.1,
+    "workflow_prior_failure_rate": 0.1,
+    "workflow_failure_rate_3": 0.1,
+    "hours_since_previous_workflow_run": 24.0,
+    "hours_since_previous_failure": 168.0
+  }
+}
